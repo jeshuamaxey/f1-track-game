@@ -12,20 +12,23 @@ ere we go!
   - [ ] play 1 track
     - [x] animate track
     - [x] game timer
->>  - [ ] results screen on guess
-    - [ ] read track data from circuits.json
-    - [ ] 
+    - [x] results screen on guess
+    - [x] read track data from circuits.json 
   - [ ] play 3 tracks
+    - [x] generate random challenge of 3 circuits
+    - [ ] add vegas and miami
+    - [ ] move challenge generation to backend
 - [ ] sharing
   - [ ] og image
   - [ ] favicon
   - [ ] share score to socials
 - [ ] thanks
   - [ ] F1 laps for the svgs
+  - [ ] F1 fonts https://imjustcreative.com/download-f1-fonts-formula-1-fonts/2021/09/16
 
 BUGS:
 
 - [x] resetting animations each turn
-- [ ] rendering progress along circuit in summary
-- [ ] totally up the elapsed time
+- [x] rendering progress along circuit in summary
+- [x] tally up the elapsed time
 - 

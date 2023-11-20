@@ -3,36 +3,14 @@
 import { AnimatePresence, AnimationPlaybackControls, motion, useAnimate } from "framer-motion";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cn, roundTo } from "@/lib/utils";
-import circuits from "../circuits.json"
+import { cn, generateChallenges, renderElapsed, roundTo } from "@/lib/utils";
+import SummarySplash from "./summary-splash";
+import { Challenge, Guess } from "../types";
+import GuessSummary from "./guess-summary";
 
-const DURATION = 2 // seconds to draw the circuit
-
-const padNum = (num: number, zeros: number) => {
-  return String(num).padStart(zeros, "0")
-}
-
-type Circuit = {
-  name: string
-  type: "polygon" | "path"
-  viewBox: string
-  path: string
-}
-
-type Challenge = {
-  circuit: Circuit,
-  options: {
-    name: string,
-    value: string,
-    correct: boolean
-  }[]
-}
-
-type Guess = {
-  option: Challenge["options"][0],
-  elapsed: number
-  percentComplete: number
-}
+const DURATION = 1 // seconds to draw the circuit
+const N_CHALLENGES = 2
+const challenges = generateChallenges(N_CHALLENGES)
 
 const GamePlayer = ({}) => {
   const [svgScope, svgAnimate] = useAnimate()
@@ -49,74 +27,6 @@ const GamePlayer = ({}) => {
   const [timerInterval, setTimerInterval] = useState<NodeJS.Timeout>()
   const [elapsed, setElapsed] = useState(0)
   const [guessMade, setGuessMade] = useState(false)
-
-  // const rotation = `rotate(${Math.random()*360})`
-  const rotation = undefined
-
-  const gameData = {
-    challenges: [
-    {
-      circuit: circuits[3],
-      options: [{
-        name: "🦅 COTA",
-        value: "usa_cota",
-        correct: false
-      }, {
-        name: "🇬🇧 Silverstone",
-        value: "uk_silverstone",
-        correct: false
-      }, {
-        name: "🦘 Albert Park",
-        value: "australia_albert_park",
-        correct: true
-      }, {
-        name: "🇯🇵 Suzuka",
-        value: "japan_suzuka",
-        correct: false
-      }]
-    },
-    {
-      circuit: circuits[4],
-      options: [{
-        name: "🦅 COTA",
-        value: "usa_cota",
-        correct: false
-      }, {
-        name: "🇬🇧 Silverstone",
-        value: "uk_silverstone",
-        correct: false
-      }, {
-        name: "🛥️ Yas Marina",
-        value: "abu_dhabi_yas_marina",
-        correct: true
-      }, {
-        name: "🇯🇵 Suzuka",
-        value: "japan_suzuka",
-        correct: false
-      }]
-    },
-    // {
-    //   circuit: circuits[1],
-    //   options: [{
-    //     name: "🦅 COTA",
-    //     value: "usa_cota",
-    //     correct: false
-    //   }, {
-    //     name: "🇬🇧 Silverstone",
-    //     value: "uk_silverstone",
-    //     correct: false
-    //   }, {
-    //     name: "🎲 Vegas",
-    //     value: "usa_vegas",
-    //     correct: false
-    //   }, {
-    //     name: "🛥️ Miami",
-    //     value: "usa_miami",
-    //     correct: true
-    //   }]
-    // }
-    ]
-  }
 
   const startGame = () => {
     console.log("start game")
@@ -178,7 +88,7 @@ const GamePlayer = ({}) => {
   }
 
   const handleNextStep = () => {
-    if(circuitIndex < gameData.challenges.length-1) {
+    if(circuitIndex < challenges.length-1) {
       console.log("resetting game...")
 
       setCircuitIndex(circuitIndex+1)
@@ -191,19 +101,12 @@ const GamePlayer = ({}) => {
     }
   }
 
-  const renderElapsed = (t: number) => {
-    const ms = t % 1000
-    const secs = (t-ms)/1000 % 60
-    const mins = (t-ms-(1000*secs))/60000
-    return `${padNum(mins, 2)}:${padNum(secs, 2)}.${padNum(ms, 3)}`
-  }
-
   const timer = renderElapsed(elapsed)
 
   return (
     <div className="min-h-screen h-screen w-full bg-slate-900">
       <div className="flex flex-row p-4">
-        <div className="text-slate-50">Track {circuitIndex+1} / {gameData.challenges.length}</div>
+        <div className="text-slate-50">Track {circuitIndex+1} / {challenges.length}</div>
         <div className="flex-grow"></div>
         <div className="text-slate-50 tabular-nums">{timer}</div>
       </div>
@@ -214,16 +117,17 @@ const GamePlayer = ({}) => {
         </div>
       )}
 
+      {/* CIRCUIT */}
       <motion.svg
         ref={svgScope}
         xmlns="http://www.w3.org/2000/svg"
-        viewBox={gameData.challenges[circuitIndex].circuit.viewBox}
+        viewBox={challenges[circuitIndex].circuit.viewBox}
         >
         <motion.path
           key={`bg-${circuitIndex}`}
           className={gameStarted ? "visible" : "hidden"}
           id="bg-track"
-          d={gameData.challenges[circuitIndex].circuit.d}
+          d={challenges[circuitIndex].circuit.d}
           fill="none"
           strokeWidth="8"
           stroke="white"
@@ -234,7 +138,7 @@ const GamePlayer = ({}) => {
           key={`reveal-${circuitIndex}`}
           className={gameStarted ? "visible" : "hidden"}
           id="revealed-track"
-          d={gameData.challenges[circuitIndex].circuit.d}
+          d={challenges[circuitIndex].circuit.d}
           fill="none"
           strokeWidth="8"
           // red-500
@@ -245,99 +149,9 @@ const GamePlayer = ({}) => {
       </motion.svg>
 
       <AnimatePresence>
-      {guessMade && !gameOver && (
-        <motion.div className={cn(
-          "absolute top-0 w-full h-full flex flex-col justify-center",
-          !guessMade && "pointer-events-none",
-          correctGuess ? "bg-green-500" : "bg-red-500"
-          )}
-          initial={{ top: 20, opacity: 0 }}
-          animate={{ top: 0, opacity: 1, transition: { delay: 1 } }}
-          >
-          {correctGuess ?
-            <h1 className="mx-auto text-center text-background text-3xl">🏁 Correct!</h1> :
-            <h1 className="mx-auto text-center text-background text-3xl">🚩 Incorrect</h1>
-          }
-          {circuitIndex < gameData.challenges.length &&
-            <Button
-              className="mx-auto mt-4"
-              variant="outline"
-              onClick={() => handleNextStep()}
-              >
-              Next circuit
-            </Button>
-          }
-        </motion.div>
-      )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-      {gameOver && (
-        // TODO: extract this into a game summary component
-        <motion.div className={cn(
-          "absolute top-0 w-full h-full flex flex-col justify-center bg-foreground text-background",
-          )}
-          initial={{ top: 20, opacity: 0 }}
-          animate={{ top: 0, opacity: 1, transition: { delay: 0 } }}
-          >
-          <h1 className="mx-auto text-center text-3xl pb-8">🏁 Game over!</h1>
-
-          <div className="flex flex-col p-4">
-            {gameData.challenges.map((challenge, index) => {
-              const name = challenge.options.find(option => option.correct)!.name
-              const guess = guesses[index]
-
-              const revealDuration = 2
-
-              return <div key={challenge.circuit.viewBox} className="flex flex-row gap-4 py-4">
-                <div className="w-1/2">
-                  <motion.svg viewBox={challenge.circuit.viewBox}>
-                    <motion.path id="result-bg-track"
-                      transform={rotation}
-                      vectorEffect="non-scaling-stroke"
-                      fill="none"
-                      stroke="white"
-                      strokeWidth={4}
-                      d={challenge.circuit.d}
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{duration: revealDuration}}
-                    />
-                    <motion.path
-                      id="result-revealed-track"
-                      transform={rotation}
-                      vectorEffect="non-scaling-stroke"
-                      fill="none"
-                      // red-600
-                      stroke="#dc2626"
-                      strokeWidth={4}
-                      d={challenge.circuit.d}
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: guess.percentComplete }}
-                      transition={{duration: guess.percentComplete*revealDuration}}
-                    />
-                  </motion.svg>
-                </div>
-                <div className="w-1/2">
-                  <h3 className={guess.option.correct ? "bg-green-500" : "bg-red-500"}>{name}</h3>
-                  <h3>{renderElapsed(guess.elapsed)}</h3>
-                  <h3>{guess.percentComplete*100}%</h3>
-                </div>
-              </div>
-              })}
-          </div>
-
-          <div className="p-4">
-            <p className="text-center">{guesses.filter(g => g.option.correct).length}/{gameData.challenges.length} circuits in {roundTo(guesses.reduce((total, guess) => total+(guess.elapsed/1000), 0), 2)}</p>
-          </div>
-        </motion.div>
-      )}
-      </AnimatePresence>
-
-      <AnimatePresence>
       {gameStarted && !guessMade && (
         <motion.div className="flex flex-row p-4 gap-4 flex-wrap">
-          {gameData.challenges[circuitIndex].options.map((option, index) => (
+          {challenges[circuitIndex].options.map((option, index) => (
             <Button
               key={index}
               variant="outline"
@@ -347,6 +161,39 @@ const GamePlayer = ({}) => {
               {option.name}
             </Button>
           ))}
+        </motion.div>
+      )}
+      </AnimatePresence>
+
+      {/* GUESS MADE */}
+      <AnimatePresence>
+      {guessMade && !gameOver && (
+        <motion.div className={cn(
+            "absolute top-0 w-full h-full",
+            !guessMade && "pointer-events-none",
+            correctGuess ? "bg-green-500" : "bg-red-500"
+          )}
+          initial={{ top: 20, opacity: 0 }}
+          animate={{ top: 0, opacity: 1, transition: { delay: 1 } }}
+          >
+            <GuessSummary
+              correct={correctGuess}
+              next={handleNextStep}
+              gameOver={circuitIndex > challenges.length-1}/>
+        </motion.div>
+      )}
+      </AnimatePresence>
+
+      {/* GAME OVER */}
+      <AnimatePresence>
+      {gameOver && (
+        <motion.div className={cn(
+          "absolute top-0 w-full h-full",
+          )}
+          initial={{ top: 20, opacity: 0 }}
+          animate={{ top: 0, opacity: 1, transition: { delay: 0 } }}
+          >
+          <SummarySplash challenges={challenges} guesses={guesses} />
         </motion.div>
       )}
       </AnimatePresence>

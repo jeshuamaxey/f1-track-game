@@ -16,6 +16,11 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        f1: ['f1', 'sans-serif'],
+        "f1-bold": ['f1-bold', 'sans-serif'],
+        "f1-wide": ['f1-wide', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

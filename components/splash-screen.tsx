@@ -53,9 +53,9 @@ const SplashScreen = () => {
     <div className="w-full flex flex-col gap-20 items-center">
       <AnimateOutWrapper visible={!startingGame}>
         <div className="text-center">
-          <h1 className="text-3xl leading-loose">Identify 3 F1 circuits</h1>
-          <h2 className="text-3xl leading-loose">Fastest wins</h2>
-          <h3 className="text-xl leading-loose">New game daily</h3>
+          <h1 className="text-3xl font-f1-bold leading-loose">Identify 3 F1 circuits</h1>
+          <h2 className="text-3xl font-f1-bold leading-loose">Fastest wins</h2>
+          <h3 className="text-xl font-f1-bold leading-loose">New game daily</h3>
         </div>
       </AnimateOutWrapper>
       

@@ -15,6 +15,7 @@
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.5",
     "geist": "^1.0.0",
+    "jsdom": "^22.1.0",
     "lucide-react": "^0.292.0",
     "next": "latest",
     "next-themes": "^0.2.1",
