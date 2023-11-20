@@ -73,7 +73,7 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
       </div>
 
       <div className="flex flex-col gap-4 p-4">
-        <ShareButton />
+        <ShareButton guesses={guesses} />
       </div>
     </div>
   )
