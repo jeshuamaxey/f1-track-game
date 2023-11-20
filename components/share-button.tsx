@@ -19,12 +19,12 @@ const createShareText = (guesses: Guess[]): string => {
   const shareTextLines = ["F1 track guesser 001", ""]
   guesses.forEach((guess, i) => {
     if(guess.option.correct) {
-      if(guess.percentComplete < 0.33) shareTextLines.push(`#${i+1}: ⬜️ ⬜️ ⬜️`)
-      else if(guess.percentComplete < 0.66) shareTextLines.push(`#${i+1}: 🟥 ⬜️ ⬜️`)
-      else if(guess.percentComplete < 1) shareTextLines.push(`#${i+1}: 🟥 🟥 ⬜️`)
-      else shareTextLines.push(`#${i+1}: ⬛️ ⬛️ ⬛️`)
+      if(guess.percentComplete < 0.33) shareTextLines.push(`⬜️⬜️⬜️`)
+      else if(guess.percentComplete < 0.66) shareTextLines.push(`🟥⬜️⬜️`)
+      else if(guess.percentComplete < 1) shareTextLines.push(`🟥🟥⬜️`)
+      else shareTextLines.push(`🟥🟥🟥`)
     } else {
-      shareTextLines.push(`#${i+1}: ⬛️ ⬛️ ⬛️`)
+      shareTextLines.push(`⬛️⬛️⬛️`)
     }
   })
 
@@ -33,14 +33,15 @@ const createShareText = (guesses: Guess[]): string => {
 
 const ShareButton = ({ guesses }: ShareButtonProps) => {
   const share = () => {
-
+    const text = createShareText(guesses)
     if(navigator.share) {
       navigator.share({
-        text: createShareText(guesses)
+        text
       })
-
     } else {
-      alert("todo: copy to clipboard")
+      navigator.clipboard.writeText(text).then(() => {
+        alert(`${text}\n\n(copied to clipboard)`)
+      })
     }
   }
   return <Button onClick={() => share()} variant="secondary">Share</Button>

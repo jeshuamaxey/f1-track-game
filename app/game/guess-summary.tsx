@@ -13,15 +13,13 @@ const GuessSummary = ({next, gameOver, correct}: GuessSummaryProps) => {
         <h1 className="mx-auto text-center text-background text-3xl">🏁 Correct!</h1> :
         <h1 className="mx-auto text-center text-background text-3xl">🚩 Incorrect</h1>
       }
-      {!gameOver &&
         <Button
           className="mx-auto mt-4"
           variant="outline"
           onClick={() => next()}
           >
-          Next circuit
+          {gameOver ? "Timing sheet" : "Next circuit"}
         </Button>
-      }
     </div>
   )
 }

@@ -8,8 +8,8 @@ import SummarySplash from "./summary-splash";
 import { Challenge, Guess } from "../types";
 import GuessSummary from "./guess-summary";
 
-const DURATION = 1 // seconds to draw the circuit
-const N_CHALLENGES = 2
+const DURATION = 20 // seconds to draw the circuit
+const N_CHALLENGES = 3 // challenges in each game
 const challenges = generateChallenges(N_CHALLENGES)
 
 const GamePlayer = ({}) => {
@@ -112,7 +112,7 @@ const GamePlayer = ({}) => {
       </div>
 
       {!gameStarted && (
-        <div className="flex flex-row p-4">
+        <div className="flex flex-row h-full items-center">
           <Button variant="outline" className="mx-auto" onClick={() => startGame()}>Start</Button>
         </div>
       )}
@@ -179,7 +179,7 @@ const GamePlayer = ({}) => {
             <GuessSummary
               correct={correctGuess}
               next={handleNextStep}
-              gameOver={circuitIndex > challenges.length-1}/>
+              gameOver={guesses.length === challenges.length}/>
         </motion.div>
       )}
       </AnimatePresence>

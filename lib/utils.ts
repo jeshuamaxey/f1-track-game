@@ -1,6 +1,7 @@
 import { Challenge } from "@/app/types"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import gen from "random-seed"
 import circuits from "../app/circuits.json"
 
 export function cn(...inputs: ClassValue[]) {
@@ -16,7 +17,7 @@ export const renderElapsed = (t: number) => {
   const secs = (t-ms)/1000 % 60
   const mins = (t-ms-(1000*secs))/60000
 
-  return `${padNum(mins, 2)}:${padNum(secs, 2)}.${padNum(ms, 3)}`
+  return `${padNum(mins, 2)}:${padNum(secs, 2)}.${padNum(roundTo(ms, 0), 3)}`
 }
 
 export function roundTo(n: number, digits: number): number {
@@ -31,10 +32,10 @@ export function roundTo(n: number, digits: number): number {
 
 export function generateChallenges(n: number): Challenge[] {
   const challenges: Challenge[] = []
+  const rand = gen.create("seed")
 
-  
   while(challenges.length < n) {
-    const circuit = circuits[Math.floor(Math.random()*circuits.length)]
+    const circuit = circuits[rand.range(circuits.length)]
     const alreadyPicked = challenges.map(c => c.circuit.value).indexOf(circuit.value) > -1
     if(alreadyPicked) continue;
 
@@ -45,7 +46,7 @@ export function generateChallenges(n: number): Challenge[] {
     }]
     
     while(options.length < 4) {
-      const opt = circuits[Math.floor(Math.random()*circuits.length)]
+      const opt = circuits[rand.range(circuits.length)]
       const optAlreadyPicked = options.map(o => o.value).indexOf(opt.value) > -1
       if(optAlreadyPicked) continue;
 

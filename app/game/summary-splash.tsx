@@ -1,7 +1,6 @@
 import { cn, renderElapsed, roundTo } from "@/lib/utils"
 import { motion } from "framer-motion"
 import { Challenge, Guess } from "../types"
-import { Button } from "@/components/ui/button"
 import ShareButton from "@/components/share-button"
 
 const STAGGER = 0.5 // time in secs between each animated ui element
@@ -18,7 +17,7 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center bg-foreground text-background">
-      <h1 className="mx-auto text-center text-3xl pb-4">🏁 Game over!</h1>
+      <h1 className="mx-auto text-center text-3xl pb-4">🏁 Timing sheet</h1>
 
       <div className="p-4">
         <p className="text-center">{nCorrect}/{nTotal} circuits in {renderElapsed(totalElapsed)}</p>

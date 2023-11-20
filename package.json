@@ -20,6 +20,7 @@
     "next": "latest",
     "next-themes": "^0.2.1",
     "postcss": "8.4.29",
+    "random-seed": "^0.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwind-merge": "^2.0.0",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@types/node": "20.3.1",
+    "@types/random-seed": "^0.3.5",
     "@types/react": "18.2.8",
     "@types/react-dom": "18.2.5",
     "encoding": "^0.1.13"

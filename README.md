@@ -31,4 +31,5 @@ BUGS:
 - [x] resetting animations each turn
 - [x] rendering progress along circuit in summary
 - [x] tally up the elapsed time
-- 
+- [ ] correct answer is always first option
+- [ ] render elapsed without loads of decimals
