@@ -2,6 +2,7 @@ import { cn, renderElapsed, roundTo } from "@/lib/utils"
 import { motion } from "framer-motion"
 import { Challenge, Guess } from "../types"
 import { Button } from "@/components/ui/button"
+import ShareButton from "@/components/share-button"
 
 const STAGGER = 0.5 // time in secs between each animated ui element
 
@@ -72,7 +73,7 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
       </div>
 
       <div className="flex flex-col gap-4 p-4">
-        <Button variant="secondary">Share</Button>
+        <ShareButton />
       </div>
     </div>
   )

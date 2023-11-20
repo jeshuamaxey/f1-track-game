@@ -62,7 +62,5 @@ export function generateChallenges(n: number): Challenge[] {
     })
   }
 
-  console.log("generated challenges:", challenges)
-  
   return challenges
 }
