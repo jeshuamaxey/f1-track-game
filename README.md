@@ -21,7 +21,7 @@ ere we go!
 - [ ] sharing
   - [ ] og image
   - [ ] favicon
-  - [ ] share score to socials
+  - [x] share score to socials
 - [ ] thanks
   - [ ] F1 laps for the svgs
   - [ ] F1 fonts https://imjustcreative.com/download-f1-fonts-formula-1-fonts/2021/09/16
@@ -31,5 +31,7 @@ BUGS:
 - [x] resetting animations each turn
 - [x] rendering progress along circuit in summary
 - [x] tally up the elapsed time
-- [ ] correct answer is always first option
-- [ ] render elapsed without loads of decimals
+- [x] correct answer is always first option
+- [x] render elapsed without loads of decimals
+- [x] resetting the start lights
+

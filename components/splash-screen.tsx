@@ -24,8 +24,6 @@ const AnimateOutWrapper = ({
     ...defaultMotionProps,
     ...customMotionProps
   }
-
-  console.log({motionProps})
   
   return (
     <AnimatePresence>

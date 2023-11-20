@@ -1,16 +1,15 @@
 "use client";
 
 import { AnimatePresence, AnimationPlaybackControls, motion, useAnimate } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cn, generateChallenges, renderElapsed, roundTo } from "@/lib/utils";
+import { cn, generateChallenges, getScoreEmojis, renderElapsed, roundTo } from "@/lib/utils";
 import SummarySplash from "./summary-splash";
 import { Challenge, Guess } from "../types";
 import GuessSummary from "./guess-summary";
+import config from "../config.json"
 
-const DURATION = 20 // seconds to draw the circuit
-const N_CHALLENGES = 3 // challenges in each game
-const challenges = generateChallenges(N_CHALLENGES)
+const challenges = generateChallenges(config.N_CHALLENGES)
 
 const GamePlayer = ({}) => {
   const [svgScope, svgAnimate] = useAnimate()
@@ -18,6 +17,7 @@ const GamePlayer = ({}) => {
   const [circuitIndex, setCircuitIndex] = useState(0)
   
   const [gameStarted, setGameStarted] = useState(false)
+  const [lightsIndex, setLightsIndex] = useState(0)
   const [correctGuess, setCorrectGuess] = useState(false)
   const [gameOver, setGameOver] = useState(false)
   const [guesses, setGuesses] = useState<Guess[]>([])
@@ -43,7 +43,7 @@ const GamePlayer = ({}) => {
         pathLength: 1
       },
       {
-        duration: DURATION,
+        duration: config.DURATION,
         autoplay: false
       }
     );
@@ -69,17 +69,17 @@ const GamePlayer = ({}) => {
   }
 
   const handleGuess = (option: Challenge["options"][0]) => {
-    clearTimeout(timerInterval)
+    clearInterval(timerInterval)
     setGuessMade(true)
     setCorrectGuess(option.correct)
 
     const guess = {
       option,
       elapsed,
-      percentComplete: Math.min(roundTo(elapsed / (DURATION * 1000), 2), 1)
+      percentComplete: Math.min(roundTo(elapsed / (config.DURATION * 1000), 2), 1)
     }
 
-    console.log("guess", guess)
+    console.log("guess made", guess)
 
     setGuesses([...guesses, guess])
 
@@ -95,73 +95,103 @@ const GamePlayer = ({}) => {
       setGameStarted(false)
       setGuessMade(false)
       setElapsed(0)
+      setLightsIndex(0)
     } else {
       console.log("game over")
       setGameOver(true)
     }
   }
 
+  const startLights = () => {
+    const interval = setInterval(() => {
+      if(lightsIndex === 5) {
+        startGame()
+        clearTimeout(interval)
+      } else {
+        setLightsIndex(lightsIndex+1)
+      }
+    }, 1000)
+
+    return () => clearInterval(interval);
+  }
+
+  useEffect(startLights, [lightsIndex])
+
   const timer = renderElapsed(elapsed)
 
+  const scoreEmojis = getScoreEmojis(challenges, guesses)
+
   return (
-    <div className="min-h-screen h-screen w-full bg-slate-900">
+    <div className="min-h-screen h-screen w-full flex flex-col bg-slate-950">
+      {/* TIMER */}
       <div className="flex flex-row p-4">
-        <div className="text-slate-50">Track {circuitIndex+1} / {challenges.length}</div>
+        <div className="text-slate-50">{scoreEmojis}</div>
         <div className="flex-grow"></div>
         <div className="text-slate-50 tabular-nums">{timer}</div>
       </div>
 
-      {!gameStarted && (
-        <div className="flex flex-row h-full items-center">
-          <Button variant="outline" className="mx-auto" onClick={() => startGame()}>Start</Button>
-        </div>
-      )}
-
       {/* CIRCUIT */}
-      <motion.svg
-        ref={svgScope}
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox={challenges[circuitIndex].circuit.viewBox}
-        >
-        <motion.path
-          key={`bg-${circuitIndex}`}
-          className={gameStarted ? "visible" : "hidden"}
-          id="bg-track"
-          d={challenges[circuitIndex].circuit.d}
-          fill="none"
-          strokeWidth="8"
-          stroke="white"
-          strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          />
-        <motion.path
-          key={`reveal-${circuitIndex}`}
-          className={gameStarted ? "visible" : "hidden"}
-          id="revealed-track"
-          d={challenges[circuitIndex].circuit.d}
-          fill="none"
-          strokeWidth="8"
-          // red-500
-          stroke="#dc2626"
-          strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          />
-      </motion.svg>
+      <div className="h-3/5 w-full px-2 flex flex-row items-center bg-slate-900">
+        <motion.svg
+          ref={svgScope}
+          className={cn("max-w-full max-h-full mx-auto", gameStarted ? "visible" : "hidden")}
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox={challenges[circuitIndex].circuit.viewBox}
+          >
+          <motion.path
+            key={`bg-${circuitIndex}`}
+            className={gameStarted ? "visible" : "hidden"}
+            id="bg-track"
+            d={challenges[circuitIndex].circuit.d}
+            fill="none"
+            strokeWidth="8"
+            stroke="white"
+            strokeLinecap="round"
+            initial={{ pathLength: 0 }}
+            />
+          <motion.path
+            key={`reveal-${circuitIndex}`}
+            className={gameStarted ? "visible" : "hidden"}
+            id="revealed-track"
+            d={challenges[circuitIndex].circuit.d}
+            fill="none"
+            strokeWidth="8"
+            // red-500
+            stroke="#dc2626"
+            strokeLinecap="round"
+            initial={{ pathLength: 0 }}
+            />
+        </motion.svg>
 
+        {/* START LIGHTS */}
+        {!gameStarted && (
+          <div className="flex flex-row h-full items-center w-full">
+            <img className="mx-auto" src={`./lights/start-lights-${lightsIndex}.svg`} alt="F1 start lights" />
+          </div>
+        )}
+      </div>
+
+      {/* OPTION BUTTONS */}
       <AnimatePresence>
       {gameStarted && !guessMade && (
-        <motion.div className="flex flex-row p-4 gap-4 flex-wrap">
+        <div className="flex flex-row p-4 gap-2 flex-wrap justify-center w-full">
           {challenges[circuitIndex].options.map((option, index) => (
-            <Button
-              key={index}
-              variant="outline"
-              disabled={guessMade}
-              onClick={() => handleGuess(option)}
-              >
-              {option.name}
-            </Button>
+            <motion.div key={index}
+              className="relative"
+              initial={{ top: 20, opacity: 0 }}
+              animate={{ top: 0, opacity: 1, transition: { delay: index*0.1 } }}
+            >
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={guessMade}
+                onClick={() => handleGuess(option)}
+                >
+                {option.name}
+              </Button>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
       )}
       </AnimatePresence>
 
@@ -169,7 +199,7 @@ const GamePlayer = ({}) => {
       <AnimatePresence>
       {guessMade && !gameOver && (
         <motion.div className={cn(
-            "absolute top-0 w-full h-full",
+            "absolute top-0 w-full h-full min-h-full",
             !guessMade && "pointer-events-none",
             correctGuess ? "bg-green-500" : "bg-red-500"
           )}

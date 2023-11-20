@@ -1,8 +1,9 @@
-import { Challenge } from "@/app/types"
+import { Challenge, Guess } from "@/app/types"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import gen from "random-seed"
 import circuits from "../app/circuits.json"
+import config from "../app/config.json"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -32,7 +33,7 @@ export function roundTo(n: number, digits: number): number {
 
 export function generateChallenges(n: number): Challenge[] {
   const challenges: Challenge[] = []
-  const rand = gen.create("seed")
+  const rand = gen.create(new Date().toDateString())
 
   while(challenges.length < n) {
     const circuit = circuits[rand.range(circuits.length)]
@@ -50,7 +51,7 @@ export function generateChallenges(n: number): Challenge[] {
       const optAlreadyPicked = options.map(o => o.value).indexOf(opt.value) > -1
       if(optAlreadyPicked) continue;
 
-      options.push({
+      options[Math.random() > 0.5 ? "push" : "unshift"]({
         name: opt.name,
         value: opt.value,
         correct: false
@@ -64,4 +65,18 @@ export function generateChallenges(n: number): Challenge[] {
   }
 
   return challenges
+}
+
+export function calculateTotalElapsed(guesses: Guess[]): number {
+  return guesses.reduce((total, guess) => total+(guess.option.correct ? guess.elapsed : config.DURATION*1000), 0)
+}
+
+export function getScoreEmojis(challenges: Challenge[], guesses: Guess[]) {
+  return challenges.map((challenge, i) => {
+    if(guesses[i]) {
+      return guesses[i].option.correct ? "🟢" : "🔴"
+    } else {
+      return "⬜️"
+    }
+  }).join(" ")
 }
