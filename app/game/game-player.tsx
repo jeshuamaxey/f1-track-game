@@ -1,5 +1,8 @@
 "use client";
 
+export const dynamic = "force-dynamic"
+
+import useLocalStorage from "use-local-storage";
 import { AnimatePresence, AnimationPlaybackControls, motion, useAnimate } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -11,16 +14,44 @@ import config from "../config.json"
 
 const challenges = generateChallenges(config.N_CHALLENGES)
 
+type GameState = {
+  guesses: Guess[],
+  circuitIndex: number
+}
+
+const todaysDateKey = () => {
+  const d = new Date()
+  return d.toISOString().split("T")[0]
+}
+
 const GamePlayer = ({}) => {
+  const dateKey = todaysDateKey()
+  const [allGameStates, setGameState] = useLocalStorage<{[key: string]: GameState}>("allGameStates", {
+    [dateKey]: {
+      guesses: [],
+      circuitIndex: 0,
+    }
+  });
+
+  const { guesses, circuitIndex } = allGameStates[dateKey]
+
+  const saveGame = (newState: Partial<GameState>) => {
+    const currentState = allGameStates[dateKey]
+    setGameState({
+      [dateKey]: {
+        ...currentState,
+        ...newState
+      }
+    })
+  }
+
   const [svgScope, svgAnimate] = useAnimate()
 
-  const [circuitIndex, setCircuitIndex] = useState(0)
   
   const [gameStarted, setGameStarted] = useState(false)
   const [lightsIndex, setLightsIndex] = useState(0)
   const [correctGuess, setCorrectGuess] = useState(false)
-  const [gameOver, setGameOver] = useState(false)
-  const [guesses, setGuesses] = useState<Guess[]>([])
+  const [gameOver, setGameOver] = useState(circuitIndex >= challenges.length-1)
 
   const [animations, setAnimations] = useState<{[key: string]: AnimationPlaybackControls}>({})
   
@@ -81,7 +112,7 @@ const GamePlayer = ({}) => {
 
     console.log("guess made", guess)
 
-    setGuesses([...guesses, guess])
+    saveGame({guesses: [...guesses, guess]})
 
     animations.game.pause()
     animations.completion.play()
@@ -91,7 +122,7 @@ const GamePlayer = ({}) => {
     if(circuitIndex < challenges.length-1) {
       console.log("resetting game...")
 
-      setCircuitIndex(circuitIndex+1)
+      saveGame({ circuitIndex: circuitIndex+1 })
       setGameStarted(false)
       setGuessMade(false)
       setElapsed(0)
