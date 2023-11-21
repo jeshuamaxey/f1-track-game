@@ -80,6 +80,7 @@ export default function Login({
         className="animate-in flex-1 flex flex-col w-full justify-center gap-2"
         action={signIn}
       >
+        <p className="pb-8 text-center">Track your progress by creating an account</p>
         <label className="text-md" htmlFor="email">
           Email
         </label>

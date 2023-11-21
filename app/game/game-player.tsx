@@ -124,11 +124,14 @@ const GamePlayer = ({}) => {
   return (
     <div className="min-h-screen h-screen w-full flex flex-col bg-slate-950">
       {/* TIMER */}
-      <div className="flex flex-row p-4">
+      <motion.div className="flex flex-row p-4"
+        initial={{y: -40}}
+        animate={{y: 0}}
+        >
         <div className="text-slate-50">{scoreEmojis}</div>
         <div className="flex-grow"></div>
         <div className="text-slate-50 tabular-nums">{timer}</div>
-      </div>
+      </motion.div>
 
       {/* CIRCUIT */}
       <div className="h-3/5 w-full px-2 flex flex-row items-center bg-slate-900">
@@ -164,11 +167,16 @@ const GamePlayer = ({}) => {
         </motion.svg>
 
         {/* START LIGHTS */}
-        {!gameStarted && (
-          <div className="flex flex-row h-full items-center w-full">
-            <img className="mx-auto" src={`./lights/start-lights-${lightsIndex}.svg`} alt="F1 start lights" />
-          </div>
-        )}
+        <AnimatePresence>
+          {!gameStarted && (
+            <motion.div className="flex flex-row h-full items-center w-full"
+              initial={{y: -40, opacity: 0}}
+              animate={{y: 0, opacity: 1}}
+              transition={{delay: 0.1}}>
+              <img className="mx-auto" src={`./lights/start-lights-${lightsIndex}.svg`} alt="F1 start lights" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* OPTION BUTTONS */}
