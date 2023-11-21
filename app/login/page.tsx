@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { headers, cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 export default function Login({
   searchParams,
@@ -56,7 +57,7 @@ export default function Login({
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
       <Link
         href="/"
-        className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
+        className="absolute left-8 top-8 py-2 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +77,7 @@ export default function Login({
       </Link>
 
       <form
-        className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+        className="animate-in flex-1 flex flex-col w-full justify-center gap-2"
         action={signIn}
       >
         <label className="text-md" htmlFor="email">
@@ -98,17 +99,17 @@ export default function Login({
           placeholder="••••••••"
           required
         />
-        <button className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2">
+        <Button className="mb-2">
           Sign In
-        </button>
-        <button
+        </Button>
+        <Button variant="outline"
           formAction={signUp}
-          className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
+          className="mb-2"
         >
           Sign Up
-        </button>
+        </Button>
         {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+          <p className="mt-4 p-4 bg-foreground/10 text-center">
             {searchParams.message}
           </p>
         )}

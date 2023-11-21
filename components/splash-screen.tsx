@@ -53,17 +53,17 @@ const SplashScreen = () => {
         <div className="text-center">
           <h1 className="text-3xl font-f1-bold leading-loose">Identify 3 F1 circuits</h1>
           <h2 className="text-3xl font-f1-bold leading-loose">Fastest wins</h2>
-          <h3 className="text-xl font-f1-bold leading-loose">New game daily</h3>
+          <h3 className="font-f1-bold leading-loose">New game daily</h3>
         </div>
       </AnimateOutWrapper>
       
-      <div className="w-full h-64 px-8">
+      <div className="w-64 h-64 px-8">
         <AnimateOutWrapper visible={!startingGame} customMotionProps={{
           exit: { transform: "scale(4)"},
           transition: { ease: "easeOut", duration: 1.500 }
         }}>
           <AspectRatio ratio={16 / 9}>
-            <div className="w-full h-full flex bg-slate-100 bg-foreground/50">
+            <div className="w-full h-full flex bg-slate-950">
               <p className="w-full text-center m-auto">
                 game preview here
               </p>

@@ -7,9 +7,9 @@ ere we go!
 - [ ] gameplay
   - [ ] start screen
     - [x] play button
-    - [ ] animate out into gameplay
+>>  - [ ] animate out into gameplay
     - [ ] stats
-  - [ ] play 1 track
+  - [x] play 1 track
     - [x] animate track
     - [x] game timer
     - [x] results screen on guess
@@ -17,6 +17,11 @@ ere we go!
   - [ ] play 3 tracks
     - [x] generate random challenge of 3 circuits
     - [ ] add vegas and miami
+  - [ ] game state
+    - [ ] signup after play
+    - [ ] store daily results
+    - [ ] store all results in local storage prior to login
+    - [ ] prohibit same day replays
     - [ ] move challenge generation to backend
 - [ ] sharing
   - [ ] og image

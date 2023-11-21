@@ -1,4 +1,4 @@
-import { calculateTotalElapsed, cn, getScoreEmojis, renderElapsed, roundTo } from "@/lib/utils"
+import { calculateTotalElapsed, cn, getScoreEmojis, renderElapsed } from "@/lib/utils"
 import { motion } from "framer-motion"
 import { Challenge, Guess } from "../types"
 import ShareButton from "@/components/share-button"
@@ -16,7 +16,7 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
   const scoreEmojis = getScoreEmojis(challenges, guesses)
 
   return (
-    <div className="w-full h-full flex flex-col justify-center bg-foreground text-background">
+    <div className="w-full h-full flex flex-col justify-center bg-background">
       <div className="w-full md:w-1/2 lg:container mx-auto">
         <h1 className="mx-auto text-center pt-4">🏁 Timing sheet</h1>
 
