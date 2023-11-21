@@ -18,9 +18,10 @@ ere we go!
     - [ ] add vegas and miami
   - [ ] game state
     - [x] store all results in local storage prior to login
-    - [ ] signup after play
-    - [ ] store daily results
-    - [ ] prohibit same day replays
+>>  - [ ] signup after play
+    - [ ] store game state in backend
+    - [x] store daily results
+    - [x] prohibit same day replays
     - [ ] move challenge generation to backend
 
 - [ ] sharing
