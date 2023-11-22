@@ -14,6 +14,11 @@ import config from "../config.json"
 
 const challenges = generateChallenges(config.N_CHALLENGES)
 
+const INITIAL_GAME_STATE = {
+  guesses: [],
+  circuitIndex: 0,
+}
+
 type GameState = {
   guesses: Guess[],
   circuitIndex: number
@@ -27,18 +32,17 @@ const todaysDateKey = () => {
 const GamePlayer = ({}) => {
   const dateKey = todaysDateKey()
   const [allGameStates, setGameState] = useLocalStorage<{[key: string]: GameState}>("allGameStates", {
-    [dateKey]: {
-      guesses: [],
-      circuitIndex: 0,
-    }
+    [dateKey]: INITIAL_GAME_STATE
   });
 
-  const { guesses, circuitIndex } = allGameStates[dateKey]
+  const guesses = allGameStates[dateKey] ? allGameStates[dateKey].guesses : INITIAL_GAME_STATE.guesses
+  const circuitIndex = allGameStates[dateKey] ? allGameStates[dateKey].circuitIndex : INITIAL_GAME_STATE.circuitIndex
 
   const saveGame = (newState: Partial<GameState>) => {
     const currentState = allGameStates[dateKey]
     setGameState({
       [dateKey]: {
+        ...INITIAL_GAME_STATE,
         ...currentState,
         ...newState
       }
@@ -170,6 +174,7 @@ const GamePlayer = ({}) => {
           ref={svgScope}
           className={cn("max-w-full max-h-full mx-auto", gameStarted ? "visible" : "hidden")}
           xmlns="http://www.w3.org/2000/svg"
+          width="2560"
           viewBox={challenges[circuitIndex].circuit.viewBox}
           >
           <motion.path
