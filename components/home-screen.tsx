@@ -6,17 +6,22 @@ import { motion, AnimatePresence } from "framer-motion"
 
 import { Button } from "./ui/button"
 import circuits from "../app/circuits.json"
+import config from "../app/config.json"
+import useGameState from "@/lib/useGameState"
+import Link from "next/link"
 
 const silverstone = circuits.find(c => c.value === "uk_silverstone")!
 
 const HomeScreen = () => {
   const router = useRouter()
+  const [gameState, saveGame] = useGameState()
+
   const [startingGame, setStartingGame] = useState(false)
 
   const startGame = () => {
     setStartingGame(true)
     setTimeout(() => {
-    router.push('/game')
+      router.push('/game')
     }, 2000)
   }
   
@@ -110,7 +115,23 @@ const HomeScreen = () => {
           exit={{ opacity: 0, y: 40 }}
           transition={{ ease: "easeOut", duration: .4, delay: 0.2 }}>
           <div>
-            <Button onClick={startGame}>Play</Button>
+            <Button onClick={startGame}>
+              {gameState.guesses.length < config.N_CHALLENGES ? "Play" : "Timing sheet"}
+            </Button>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+
+    <AnimatePresence>
+      {!startingGame && (
+        <motion.div
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, y: 40 }}
+          transition={{ ease: "easeOut", duration: .4, delay: 0.2 }}>
+          <div className="text-xs text-center text-slate-400">
+            <p>F1 tracks is not affiliated with F1 in any way.</p>
+            <p>It was built by <Link className="underline hover:text-slate-100" href="https://twitter.com/jeshuamaxey">Jeshua Maxey</Link>, a big F1 fan.</p>
           </div>
         </motion.div>
       )}

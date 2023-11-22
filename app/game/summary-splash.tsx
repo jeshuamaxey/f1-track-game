@@ -1,8 +1,13 @@
 import { calculateTotalElapsed, cn, getScoreEmojis, renderElapsed } from "@/lib/utils"
 import { motion } from "framer-motion"
+import { CaretLeftIcon, BarChartIcon } from "@radix-ui/react-icons"
+
 import { Challenge, Guess } from "../types"
 import ShareButton from "@/components/share-button"
 import config from "../config.json"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+
 
 const STAGGER = 0.5 // time in secs between each animated ui element
 
@@ -26,7 +31,7 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
 
         <div className="flex flex-col gap-4 p-4">
           {challenges.map((challenge, index) => {
-            const name = challenge.options.find(option => option.correct)!.name
+            const {name, flag} = challenge.options.find(option => option.correct)!
             const guess = guesses[index]
 
             const revealDuration = 2
@@ -64,7 +69,7 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
                 </svg>
               </div>
               <div className="w-1/2 ">
-                <h3 className="font-bold text-slate-200 pb-2">{name}</h3>
+                <h3 className="font-bold text-slate-200 pb-2">{flag} {name}</h3>
                 {guess.option.correct ? (
                   <h3 className="text-slate-400 text-sm">Correctly guessed in: {renderElapsed(guess.elapsed)}</h3>
                   ) : (
@@ -75,12 +80,37 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
             })}
         </div>
 
+
         <motion.div className="flex flex-col gap-4 p-4 pt-0 relative"
           initial={{ opacity: 0, top: 20 }}
           animate={{ opacity: 1, top: 0 }}
           transition={{ duration: 0.5, delay: guesses.length*0.5 }}>
           <ShareButton guesses={guesses} />
         </motion.div>
+        <div className="w-full flex flex-row gap-4 px-4">
+          <motion.div className="flex-grow flex flex-col gap-4 pt-0 relative"
+            initial={{ opacity: 0, top: 20 }}
+            animate={{ opacity: 1, top: 0 }}
+            transition={{ duration: 0.5, delay: (guesses.length+1)*0.5 }}>
+            <Button variant="outline" asChild>
+            <Link href="/">
+              <CaretLeftIcon className="mr-2 h-4 w-4" /> Home
+            </Link>
+            </Button>
+          </motion.div>
+          
+          {/* <motion.div className="flex-grow flex flex-col gap-4 pt-0 relative"
+            initial={{ opacity: 0, top: 20 }}
+            animate={{ opacity: 1, top: 0 }}
+            transition={{ duration: 0.5, delay: (guesses.length+1.5)*0.5 }}>
+            <Button variant="outline" asChild>
+              <Link href="/stats">
+                <BarChartIcon className="mr-2 h-4 w-4" /> Stats
+              </Link>
+            </Button>
+          </motion.div> */}
+
+        </div>
       </div>
     </div>
   )

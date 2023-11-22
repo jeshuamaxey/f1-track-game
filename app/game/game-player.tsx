@@ -2,66 +2,35 @@
 
 export const dynamic = "force-dynamic"
 
-import useLocalStorage from "use-local-storage";
+
 import { AnimatePresence, AnimationPlaybackControls, motion, useAnimate } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn, generateChallenges, getScoreEmojis, renderElapsed, roundTo } from "@/lib/utils";
 import SummarySplash from "./summary-splash";
-import { Challenge, Guess } from "../types";
+import { Challenge } from "../types";
 import GuessSummary from "./guess-summary";
 import config from "../config.json"
+import useGameState from "@/lib/useGameState";
 
 const challenges = generateChallenges(config.N_CHALLENGES)
 
-const INITIAL_GAME_STATE = {
-  guesses: [],
-  circuitIndex: 0,
-}
-
-type GameState = {
-  guesses: Guess[],
-  circuitIndex: number
-}
-
-const todaysDateKey = () => {
-  const d = new Date()
-  return d.toISOString().split("T")[0]
-}
-
 const GamePlayer = ({}) => {
-  const dateKey = todaysDateKey()
-  const [allGameStates, setGameState] = useLocalStorage<{[key: string]: GameState}>("allGameStates", {
-    [dateKey]: INITIAL_GAME_STATE
-  });
-
-  const guesses = allGameStates[dateKey] ? allGameStates[dateKey].guesses : INITIAL_GAME_STATE.guesses
-  const circuitIndex = allGameStates[dateKey] ? allGameStates[dateKey].circuitIndex : INITIAL_GAME_STATE.circuitIndex
-
-  const saveGame = (newState: Partial<GameState>) => {
-    const currentState = allGameStates[dateKey]
-    setGameState({
-      [dateKey]: {
-        ...INITIAL_GAME_STATE,
-        ...currentState,
-        ...newState
-      }
-    })
-  }
+  const [gameState, saveGame] = useGameState()
+  const {guesses, circuitIndex} = gameState
 
   const [svgScope, svgAnimate] = useAnimate()
 
-  
   const [gameStarted, setGameStarted] = useState(false)
   const [lightsIndex, setLightsIndex] = useState(0)
   const [correctGuess, setCorrectGuess] = useState(false)
-  const [gameOver, setGameOver] = useState(circuitIndex >= challenges.length-1)
+  const [gameOver, setGameOver] = useState(guesses.length === challenges.length)
 
   const [animations, setAnimations] = useState<{[key: string]: AnimationPlaybackControls}>({})
   
   const [timerInterval, setTimerInterval] = useState<NodeJS.Timeout>()
   const [elapsed, setElapsed] = useState(0)
-  const [guessMade, setGuessMade] = useState(false)
+  const [guessMade, setGuessMade] = useState(guesses.length === challenges.length)
 
   const startGame = () => {
     console.log("start game")
@@ -163,7 +132,7 @@ const GamePlayer = ({}) => {
         initial={{y: -40}}
         animate={{y: 0}}
         >
-        <div className="text-slate-50">{scoreEmojis}</div>
+        <div className={cn("text-slate-50", guessMade ? "hidden" : "visible")}>{scoreEmojis}</div>
         <div className="flex-grow"></div>
         <div className="text-slate-50 tabular-nums">{timer}</div>
       </motion.div>
@@ -231,7 +200,7 @@ const GamePlayer = ({}) => {
                 disabled={guessMade}
                 onClick={() => handleGuess(option)}
                 >
-                {option.name}
+                {option.flag} {option.name}
               </Button>
             </motion.div>
           ))}
@@ -251,9 +220,10 @@ const GamePlayer = ({}) => {
           animate={{ top: 0, opacity: 1, transition: { delay: 1 } }}
           >
             <GuessSummary
-              correct={correctGuess}
+              guess={guesses.at(-1)}
               next={handleNextStep}
-              gameOver={guesses.length === challenges.length}/>
+              gameOver={guesses.length === challenges.length}
+              correctOption={challenges[circuitIndex].options.find(o => o.correct)!}/>
         </motion.div>
       )}
       </AnimatePresence>

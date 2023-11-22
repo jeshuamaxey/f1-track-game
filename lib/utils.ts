@@ -43,6 +43,8 @@ export function generateChallenges(n: number): Challenge[] {
     const options: Challenge["options"] = [{
       name: circuit.name,
       value: circuit.value,
+      emoji: circuit.emoji,
+      flag: circuit.flag,
       correct: true
     }]
     
@@ -54,6 +56,8 @@ export function generateChallenges(n: number): Challenge[] {
       options[Math.random() > 0.5 ? "push" : "unshift"]({
         name: opt.name,
         value: opt.value,
+        emoji: opt.emoji,
+        flag: opt.flag,
         correct: false
       })
     }

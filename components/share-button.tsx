@@ -1,5 +1,6 @@
 import { Guess } from "@/app/types"
 import { Button } from "./ui/button"
+import { Share1Icon } from "@radix-ui/react-icons"
 import { calculateTotalElapsed, renderElapsed } from "@/lib/utils"
 
 type ShareButtonProps = {
@@ -31,7 +32,8 @@ const ShareButton = ({ guesses }: ShareButtonProps) => {
       })
     }
   }
-  return <Button onClick={() => share()} variant="secondary">Share</Button>
+  return <Button onClick={() => share()} variant="secondary">
+    <Share1Icon className="mr-2 h-4 w-4" />Share</Button>
 }
 
 export default ShareButton
