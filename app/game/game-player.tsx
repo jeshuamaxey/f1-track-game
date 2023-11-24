@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn, generateChallenges, getScoreEmojis, renderElapsed, roundTo } from "@/lib/utils";
 import SummarySplash from "./summary-splash";
-import { Challenge } from "../types";
+import { Challenge } from "../types/app";
 import GuessSummary from "./guess-summary";
 import config from "../config.json"
 import useGameState from "@/lib/useGameState";

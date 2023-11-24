@@ -1,4 +1,4 @@
-import { Challenge, Guess } from "@/app/types"
+import { Challenge, Guess } from "@/app/types/app"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import gen from "random-seed"

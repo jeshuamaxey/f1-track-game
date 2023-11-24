@@ -1,6 +1,6 @@
 import useLocalStorage from "use-local-storage";
 
-import { Guess } from "@/app/types"
+import { Guess } from "@/app/types/app"
 
 const todaysDateKey = () : string => {
   const d = new Date()

@@ -1,4 +1,4 @@
-import { Guess } from "@/app/types"
+import { Guess } from "@/app/types/app"
 import { Button } from "./ui/button"
 import { Share1Icon } from "@radix-ui/react-icons"
 import { calculateTotalElapsed, padNum, renderElapsed } from "@/lib/utils"
