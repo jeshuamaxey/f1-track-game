@@ -123,7 +123,7 @@ const GamePlayer = ({}) => {
 
   const timer = renderElapsed(elapsed)
 
-  const scoreEmojis = getScoreEmojis(challenges, guesses)
+  const scoreEmojis = getScoreEmojis(challenges.length, guesses)
 
   return (
     <div className="min-h-screen h-screen w-full flex flex-col bg-slate-950">

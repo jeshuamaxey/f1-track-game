@@ -75,12 +75,18 @@ export function calculateTotalElapsed(guesses: Guess[]): number {
   return guesses.reduce((total, guess) => total+(guess.option.correct ? guess.elapsed : config.DURATION*1000), 0)
 }
 
-export function getScoreEmojis(challenges: Challenge[], guesses: Guess[]) {
-  return challenges.map((challenge, i) => {
+export function getScoreEmojis(nChallenges: number, guesses: Guess[]) {
+  let i = 0
+  const score = []
+
+  while(i<nChallenges) {
     if(guesses[i]) {
-      return guesses[i].option.correct ? "🟢" : "🔴"
+      score.push(guesses[i].option.correct ? "🟢" : "🔴")
     } else {
-      return "⬜️"
+      score.push("⬜️")
     }
-  }).join(" ")
+    i++;
+  }
+  
+  return score.join(" ")
 }
