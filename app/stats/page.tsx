@@ -26,7 +26,7 @@ export default async function Stats({}) {
   return <div className="w-full">
     <Navbar />
     <div className="container p-4">
-      <h1 className="text-3xl pb-4">Stats</h1>
+      <h1 className="text-3xl font-f1-bold pb-4">Stats</h1>
 
       {userError ? <div>
         Login or signup to access your stats

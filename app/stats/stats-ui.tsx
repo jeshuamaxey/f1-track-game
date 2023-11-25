@@ -38,8 +38,6 @@ const StatsUI = ({dailyResults}: StatsProps) => {
     pc: 0,
     correct: 0
   })
-
-  console.log({lastSevenDays: lastNDays, averages})
   
   return (
     <div className="flex flex-col">
@@ -59,23 +57,22 @@ const StatsUI = ({dailyResults}: StatsProps) => {
       </div>
 
       <div className="pb-6">
-        <h2 className="text-sm text-foreground/80 pb-2">Last 7 days</h2>
         <table className="table-auto w-full">
           <thead>
-              <tr className="border-b">
-                <th className="text-left text-xs">Game</th>
-                <th className="text-right text-xs">Result</th>
+              <tr className="">
+                <th className="py-1 font-f1-bold text-left text-sm text-foreground/80">Last 7 days</th>
+                <th className="py-1 font-f1-bold text-right text-sm text-foreground/80">Result</th>
               </tr>
           </thead>
           <tbody>
           {
             lastNDays.map(res => {
               const { result, dateKey } = res
-              const emojis = result ? getScoreEmojis(result.guesses.length, result.guesses) : "⬜️ ⬜️ ⬜️"
+              const emojis = result ? getScoreEmojis(result.guesses.length, result.guesses) : "DNS"
               return (
-                <tr key={dateKey} className="border-b">
-                  <td className="text-xs text-foreground/80">{getChallengeNumber(dateKey)}</td>
-                  <td className="text-right">{emojis}</td>
+                <tr key={dateKey} className="odd:bg-slate-900">
+                  <td className="py-1 text-sm">{getChallengeNumber(dateKey)}</td>
+                  <td className="py-1 text-right">{emojis}</td>
                 </tr>
               )
             })
