@@ -12,11 +12,12 @@ import { Challenge } from "../types/app";
 import GuessSummary from "./guess-summary";
 import config from "../config.json"
 import useGameState from "@/lib/useGameState";
+import { User } from "@supabase/supabase-js";
 
 const challenges = generateChallenges(config.N_CHALLENGES)
 
-const GamePlayer = ({}) => {
-  const [gameState, saveGame] = useGameState({})
+const GamePlayer = ({user}: {user?: User | null}) => {
+  const [gameState, saveGame] = useGameState({user})
   const {guesses, circuitIndex} = gameState
 
   const [svgScope, svgAnimate] = useAnimate()

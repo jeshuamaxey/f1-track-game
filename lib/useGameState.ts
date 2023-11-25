@@ -59,7 +59,7 @@ export const getAllGames = ({complete}: {complete?: boolean}) => {
   return games
 }
 
-const useGameState = ({user, date}: {user?: User, date?: string}): [
+const useGameState = ({user, date}: {user?: User | null, date?: string}): [
   GameState,
   (newState: Partial<GameState>) => void,
   () => void
@@ -83,16 +83,16 @@ const useGameState = ({user, date}: {user?: User, date?: string}): [
       [dateKey]: updatedState
     })
 
-    console.log("TODO: don't forget this")
+    console.log("TODO: don't forget this", !!user, updatedState.guesses.length === config.N_CHALLENGES)
     // save to backend if the game is complete and user is logged in
-    // if(user && updatedState.guesses.length === config.N_CHALLENGES) {
-    //   console.log("saving current game to backend")
-    //   await supabase.from("daily_results").upsert({
-    //     user_id: user.id,
-    //     date_key: dateKey,
-    //     guesses: updatedState.guesses
-    //   })
-    // }
+    if(user && updatedState.guesses.length === config.N_CHALLENGES) {
+      console.log("saving current game to backend")
+      await supabase.from("daily_results").upsert({
+        user_id: user.id,
+        date_key: dateKey,
+        guesses: updatedState.guesses
+      })
+    }
 
   }
 
