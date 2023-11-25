@@ -10,113 +10,107 @@ INSERT INTO auth.users (instance_id,id,aud,"role",email,encrypted_password,email
 INSERT INTO auth.identities (id,user_id,identity_data,provider,last_sign_in_at,created_at,updated_at) VALUES
 	('5899f99d-a449-4bfa-8769-19c097aaf1f5','5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid,'{"sub": "5899f99d-a449-4bfa-8769-19c097aaf1f5"}','email','2022-02-11 21:02:04.545','2022-02-11 21:02:04.545','2022-02-11 21:02:04.545');
 
-INSERT INTO public.daily_results (date_key, user_id, results)
+INSERT INTO public.daily_results (date_key, user_id, guesses)
 VALUES
-  ('2023-11-23', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '{
-    "guesses": [{
-      "option": {
-        "name": "Suzuka",
-        "value": "japan_suzuka",
-        "emoji": "🌸",
-        "flag": "🇯🇵",
-        "correct": true
-      },
-      "elapsed": 6441,
-      "percentComplete": 0.21
+  ('2023-11-23', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '[{
+    "option": {
+      "name": "Suzuka",
+      "value": "japan_suzuka",
+      "emoji": "🌸",
+      "flag": "🇯🇵",
+      "correct": true
     },
-    {
-      "option": {
-        "name": "Zandvoort Circuit",
-        "value": "netherlands",
-        "emoji": "🧇",
-        "flag": "🇳🇱",
-        "correct": true
-      },
-      "elapsed": 3635,
-      "percentComplete": 0.12
+    "elapsed": 6441,
+    "percentComplete": 0.21
+  },
+  {
+    "option": {
+      "name": "Zandvoort Circuit",
+      "value": "netherlands",
+      "emoji": "🧇",
+      "flag": "🇳🇱",
+      "correct": true
     },
-    {
-      "option": {
-        "name": "Sochi Autodrom",
-        "value": "russia",
-        "emoji": "🇷🇺",
-        "flag": "🇷🇺",
-        "correct": true
-      },
-      "elapsed": 5291,
-      "percentComplete": 0.18
-    }]
-  }'::jsonb),
-  ('2023-11-22', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '{
-    "guesses": [{
-      "option": {
-        "name": "Suzuka",
-        "value": "japan_suzuka",
-        "emoji": "🌸",
-        "flag": "🇯🇵",
-        "correct": false
-      },
-      "elapsed": 6441,
-      "percentComplete": 0.21
+    "elapsed": 3635,
+    "percentComplete": 0.12
+  },
+  {
+    "option": {
+      "name": "Sochi Autodrom",
+      "value": "russia",
+      "emoji": "🇷🇺",
+      "flag": "🇷🇺",
+      "correct": true
     },
-    {
-      "option": {
-        "name": "Zandvoort Circuit",
-        "value": "netherlands",
-        "emoji": "🧇",
-        "flag": "🇳🇱",
-        "correct": false
-      },
-      "elapsed": 3635,
-      "percentComplete": 0.12
+    "elapsed": 5291,
+    "percentComplete": 0.18
+  }]'::jsonb),
+  ('2023-11-22', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '[{
+    "option": {
+      "name": "Suzuka",
+      "value": "japan_suzuka",
+      "emoji": "🌸",
+      "flag": "🇯🇵",
+      "correct": false
     },
-    {
-      "option": {
-        "name": "Sochi Autodrom",
-        "value": "russia",
-        "emoji": "🇷🇺",
-        "flag": "🇷🇺",
-        "correct": true
-      },
-      "elapsed": 5291,
-      "percentComplete": 0.18
-    }]
-  }'::jsonb),
-  ('2023-11-20', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '{
-    "guesses": [{
-      "option": {
-        "name": "Suzuka",
-        "value": "japan_suzuka",
-        "emoji": "🌸",
-        "flag": "🇯🇵",
-        "correct": false
-      },
-      "elapsed": 6441,
-      "percentComplete": 0.21
+    "elapsed": 6441,
+    "percentComplete": 0.21
+  },
+  {
+    "option": {
+      "name": "Zandvoort Circuit",
+      "value": "netherlands",
+      "emoji": "🧇",
+      "flag": "🇳🇱",
+      "correct": false
     },
-    {
-      "option": {
-        "name": "Zandvoort Circuit",
-        "value": "netherlands",
-        "emoji": "🧇",
-        "flag": "🇳🇱",
-        "correct": true
-      },
-      "elapsed": 3635,
-      "percentComplete": 0.12
+    "elapsed": 3635,
+    "percentComplete": 0.12
+  },
+  {
+    "option": {
+      "name": "Sochi Autodrom",
+      "value": "russia",
+      "emoji": "🇷🇺",
+      "flag": "🇷🇺",
+      "correct": true
     },
-    {
-      "option": {
-        "name": "Sochi Autodrom",
-        "value": "russia",
-        "emoji": "🇷🇺",
-        "flag": "🇷🇺",
-        "correct": true
-      },
-      "elapsed": 5291,
-      "percentComplete": 0.18
-    }]
-  }'::jsonb);
+    "elapsed": 5291,
+    "percentComplete": 0.18
+  }]'::jsonb),
+  ('2023-11-20', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '[{
+    "option": {
+      "name": "Suzuka",
+      "value": "japan_suzuka",
+      "emoji": "🌸",
+      "flag": "🇯🇵",
+      "correct": false
+    },
+    "elapsed": 6441,
+    "percentComplete": 0.21
+  },
+  {
+    "option": {
+      "name": "Zandvoort Circuit",
+      "value": "netherlands",
+      "emoji": "🧇",
+      "flag": "🇳🇱",
+      "correct": true
+    },
+    "elapsed": 3635,
+    "percentComplete": 0.12
+  },
+  {
+    "option": {
+      "name": "Sochi Autodrom",
+      "value": "russia",
+      "emoji": "🇷🇺",
+      "flag": "🇷🇺",
+      "correct": true
+    },
+    "elapsed": 5291,
+    "percentComplete": 0.18
+  }]'::jsonb);
 
 -- MUST BE LAST
 END $$;

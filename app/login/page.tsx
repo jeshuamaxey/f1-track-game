@@ -26,7 +26,7 @@ export default function Login({
       return redirect('/login?message=Could not authenticate user')
     }
 
-    return redirect('/stats')
+    return redirect('/processing')
   }
 
   const signUp = async (formData: FormData) => {
@@ -110,7 +110,7 @@ export default function Login({
           Sign Up
         </Button>
         {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-center">
+          <p className="mt-4 p-4 bg-foreground/10 text-center border-l-4 border-slate-600">
             {searchParams.message}
           </p>
         )}

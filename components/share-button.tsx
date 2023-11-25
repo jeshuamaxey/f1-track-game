@@ -1,7 +1,7 @@
 import { Guess } from "@/app/types/app"
 import { Button } from "./ui/button"
 import { Share1Icon } from "@radix-ui/react-icons"
-import { calculateTotalElapsed, padNum, renderElapsed } from "@/lib/utils"
+import { calculateTotalElapsed, getChallengeNumber, padNum, renderElapsed } from "@/lib/utils"
 import config from "../app/config.json"
 
 type ShareButtonProps = {
@@ -11,12 +11,10 @@ type ShareButtonProps = {
 const createShareText = (guesses: Guess[]): string => {
   const guessEmojis = guesses.map(g => g.option.correct ? "🟢" : "🔴").join("")
   const elapsed = calculateTotalElapsed(guesses)
-
-
-  const nDays = Math.round((new Date().getTime() - new Date(config.DATE_OF_GAME_ONE).getTime()) / (1000 * 60 * 60 * 24));
+  const challengeNum = getChallengeNumber()
 
   return [
-    `F1 track guesser ${padNum(nDays, 3)}`,
+    `F1 tracks ${challengeNum}`,
     "",
     guessEmojis,
     renderElapsed(elapsed)

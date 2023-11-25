@@ -16,7 +16,7 @@ import useGameState from "@/lib/useGameState";
 const challenges = generateChallenges(config.N_CHALLENGES)
 
 const GamePlayer = ({}) => {
-  const [gameState, saveGame] = useGameState()
+  const [gameState, saveGame] = useGameState({})
   const {guesses, circuitIndex} = gameState
 
   const [svgScope, svgAnimate] = useAnimate()
@@ -128,6 +128,7 @@ const GamePlayer = ({}) => {
   return (
     <div className="min-h-screen h-screen w-full flex flex-col bg-slate-950">
       {/* TIMER */}
+
       <motion.div className="flex flex-row p-4"
         initial={{y: -40}}
         animate={{y: 0}}
@@ -136,6 +137,7 @@ const GamePlayer = ({}) => {
         <div className="flex-grow"></div>
         <div className="text-slate-50 tabular-nums">{timer}</div>
       </motion.div>
+
 
       {/* CIRCUIT */}
       <div className="h-3/5 w-full px-2 flex flex-row items-center bg-slate-900">

@@ -21,7 +21,7 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
   const scoreEmojis = getScoreEmojis(challenges.length, guesses)
 
   return (
-    <div className="w-full h-full flex flex-col justify-center bg-background">
+    <div className="w-full h-full flex flex-col bg-background pt-4">
       <div className="w-full md:w-1/2 lg:container mx-auto">
         <h1 className="mx-auto text-center pt-4">🏁 Timing sheet</h1>
 

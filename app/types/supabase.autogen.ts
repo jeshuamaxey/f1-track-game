@@ -13,19 +13,19 @@ export interface Database {
         Row: {
           created_at: string
           date_key: string
-          results: Json
+          guesses: Json
           user_id: string
         }
         Insert: {
           created_at?: string
           date_key: string
-          results: Json
+          guesses: Json
           user_id: string
         }
         Update: {
           created_at?: string
           date_key?: string
-          results?: Json
+          guesses?: Json
           user_id?: string
         }
         Relationships: [

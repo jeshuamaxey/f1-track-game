@@ -14,7 +14,7 @@ const silverstone = circuits.find(c => c.value === "uk_silverstone")!
 
 const HomeScreen = () => {
   const router = useRouter()
-  const [gameState, saveGame] = useGameState()
+  const [gameState, saveGame] = useGameState({})
 
   const [startingGame, setStartingGame] = useState(false)
 

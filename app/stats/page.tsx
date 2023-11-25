@@ -1,7 +1,8 @@
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
 import { Database } from "../types/supabase"
-import { getScoreEmojis } from "@/lib/utils"
+import Navbar from "@/components/navbar"
+import StatsUI from "./stats-ui"
 
 export default async function Stats({}) {
   const cookieStore = cookies()
@@ -17,20 +18,19 @@ export default async function Stats({}) {
     }
   )
 
+  const {data: {user}, error: userError} = await supabase.auth.getUser()
   const {data: dailyResults, error} = await supabase.from("daily_results").select("*")
 
   if(error) return <p>Failed to fetch data</p>
   
-  return <div>
-    <h1 className="p-4 text-3xl">Stats</h1>
-    <div>
-      {dailyResults.map(res => {
-        const { guesses } = res.results
-        return (
-        <p key={res.date_key}>
-          {res.date_key} - {getScoreEmojis(guesses.length, guesses)}
-        </p>)
-      })}
+  return <div className="w-full">
+    <Navbar />
+    <div className="container p-4">
+      <h1 className="text-3xl pb-4">Stats</h1>
+
+      {userError ? <div>
+        Login or signup to access your stats
+      </div> : <StatsUI dailyResults={dailyResults} />}
     </div>
   </div>
 }

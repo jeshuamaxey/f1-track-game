@@ -13,6 +13,20 @@ export const padNum = (num: number, zeros: number) => {
   return String(num).padStart(zeros, "0")
 }
 
+export const getDateKey = (date?: Date) : string => {
+  const d = date ? date : new Date()
+  return d.toISOString().split("T")[0]
+}
+
+export const getChallengeNumber = (dateKey?: string) => {
+  const d = dateKey || getDateKey()
+  const nDays = Math.round((new Date(d).getTime() - new Date(config.DATE_OF_GAME_ONE).getTime()) / (1000 * 60 * 60 * 24));
+  return padNum(nDays, 3)
+}
+
+/*
+ * @ t: number duration in millisecond
+ **/
 export const renderElapsed = (t: number) => {
   const ms = t % 1000
   const secs = (t-ms)/1000 % 60

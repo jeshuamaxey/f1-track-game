@@ -10,19 +10,13 @@ export type Database = MergeDeep<
       Tables: {
         daily_results: {
           Row: {
-            results: {
-              guesses: Guess[]
-            }
+            guesses: Guess[]
           }
           Insert: {
-            results: {
-              guesses: Guess[]
-            }
+            guesses: Guess[]
           }
           Update: {
-            results?: {
-              guesses: Guess[]
-            }
+            guesses?: Guess[]
           }
         }
       }
