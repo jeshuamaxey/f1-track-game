@@ -9,12 +9,23 @@ import circuits from "../app/circuits.json"
 import config from "../app/config.json"
 import useGameState from "@/lib/useGameState"
 import Link from "next/link"
+import { sbDailyResult } from "@/app/types/app"
+import { getDateKey } from "@/lib/utils"
 
 const silverstone = circuits.find(c => c.value === "uk_silverstone")!
 
-const HomeScreen = () => {
+type HomeScreenProps = {
+  dailyResults: sbDailyResult[] | null
+}
+
+const HomeScreen = ({dailyResults}: HomeScreenProps) => {
   const router = useRouter()
-  const [gameState, saveGame] = useGameState({})
+  const [gameState, ] = useGameState({
+    dailyResults: dailyResults || []
+  })
+
+  const todaysDateKey = getDateKey()
+  const todaysGame = dailyResults ? dailyResults.find(res => res.date_key === todaysDateKey) : undefined
 
   const [startingGame, setStartingGame] = useState(false)
 
@@ -24,7 +35,11 @@ const HomeScreen = () => {
       router.push('/game')
     }, 2000)
   }
-  
+
+  let btnCopy = "Timing sheet"
+  if(!todaysGame && gameState.guesses.length < config.N_CHALLENGES) btnCopy = "Continue" 
+  if(!todaysGame && gameState.guesses.length === 0) btnCopy = "Play"
+
   return (
     <div className="w-full flex flex-col gap-8 items-center">
       <div className="text-center h-26">
@@ -116,7 +131,7 @@ const HomeScreen = () => {
           transition={{ ease: "easeOut", duration: .4, delay: 0.2 }}>
           <div>
             <Button onClick={startGame}>
-              {gameState.guesses.length < config.N_CHALLENGES ? "Play" : "Timing sheet"}
+              {btnCopy}
             </Button>
           </div>
         </motion.div>

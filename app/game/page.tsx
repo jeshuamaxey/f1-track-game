@@ -9,12 +9,18 @@ export default async function Index() {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
 
+  const { data: {session} } = await supabase.auth.getSession()
+
+  if(!session) {
+    return <GamePlayer dailyResults={[]} />
+  }
+
   const { data: { user }, error: userError} = await supabase.auth.getUser()
-  const { data, error } = await supabase.from("daily_results").select("*")
+  const { data: dailyResults, error } = await supabase.from("daily_results").select("*")
 
   if(userError || error) {
     return <p className="text-center">Something went wrong :(</p>
   }
 
-  return <GamePlayer dailyResults={data} />
+  return <GamePlayer dailyResults={dailyResults} />
 }

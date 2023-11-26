@@ -6,23 +6,24 @@ export const dynamic = "force-dynamic"
 import { AnimatePresence, AnimationPlaybackControls, motion, useAnimate } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cn, generateChallenges, getScoreEmojis, renderElapsed, roundTo } from "@/lib/utils";
+import { cn, generateChallenges, getDateKey, getScoreEmojis, renderElapsed, roundTo } from "@/lib/utils";
 import SummarySplash from "./summary-splash";
-import { Challenge } from "../types/app";
+import { Challenge, sbDailyResult } from "../types/app";
 import GuessSummary from "./guess-summary";
 import config from "../config.json"
 import useGameState from "@/lib/useGameState";
-import { User } from "@supabase/supabase-js";
-import { Database } from "../types/supabase";
 
 const challenges = generateChallenges(config.N_CHALLENGES)
 
 type GamePlayerProps = {
-  dailyResults: Database["public"]["Tables"]["daily_results"]["Row"][]
+  dailyResults: sbDailyResult[]
 }
 
 const GamePlayer = ({dailyResults}: GamePlayerProps) => {
-  const [gameState, saveGame] = useGameState({})
+  const todaysDateKey = getDateKey()
+  const todaysGame = dailyResults.find(res => res.date_key === todaysDateKey)
+  
+  const [gameState, saveGame] = useGameState({dailyResults})
   const {guesses, circuitIndex} = gameState
 
   const [svgScope, svgAnimate] = useAnimate()
@@ -32,7 +33,7 @@ const GamePlayer = ({dailyResults}: GamePlayerProps) => {
   const [gameStarted, setGameStarted] = useState(false)
   const [lightsIndex, setLightsIndex] = useState(0)
   const [correctGuess, setCorrectGuess] = useState(false)
-  const [gameOver, setGameOver] = useState(guesses.length === challenges.length)
+  const [gameOver, setGameOver] = useState(todaysGame || guesses.length === challenges.length)
 
   const [animations, setAnimations] = useState<{[key: string]: AnimationPlaybackControls}>({})
   
@@ -108,6 +109,7 @@ const GamePlayer = ({dailyResults}: GamePlayerProps) => {
       setGuessMade(false)
       setElapsed(0)
       setLightsIndex(0)
+      startLights()
     } else {
       console.log("game over")
       setGameOver(true)
