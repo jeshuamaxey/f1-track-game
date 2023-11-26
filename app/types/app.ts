@@ -1,3 +1,5 @@
+import { Database } from "./supabase"
+
 export type Circuit = {
   name: string
   emoji: string
@@ -23,3 +25,5 @@ export type Guess = {
   elapsed: number
   percentComplete: number
 }
+
+export type sbDailyResult = Database["public"]["Tables"]["daily_results"]["Row"]

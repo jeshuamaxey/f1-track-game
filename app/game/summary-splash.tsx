@@ -2,7 +2,7 @@ import { calculateTotalElapsed, cn, getScoreEmojis, renderElapsed } from "@/lib/
 import { motion } from "framer-motion"
 import { CaretLeftIcon, BarChartIcon } from "@radix-ui/react-icons"
 
-import { Challenge, Guess } from "../types"
+import { Challenge, Guess } from "../types/app"
 import ShareButton from "@/components/share-button"
 import config from "../config.json"
 import { Button } from "@/components/ui/button"
@@ -18,10 +18,10 @@ type SummarySplashProps = {
 
 const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
   const totalElapsed = calculateTotalElapsed(guesses)
-  const scoreEmojis = getScoreEmojis(challenges, guesses)
+  const scoreEmojis = getScoreEmojis(challenges.length, guesses)
 
   return (
-    <div className="w-full h-full flex flex-col justify-center bg-background">
+    <div className="w-full h-full flex flex-col bg-background pt-4">
       <div className="w-full md:w-1/2 lg:container mx-auto">
         <h1 className="mx-auto text-center pt-4">🏁 Timing sheet</h1>
 
@@ -99,16 +99,16 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
             </Button>
           </motion.div>
           
-          {/* <motion.div className="flex-grow flex flex-col gap-4 pt-0 relative"
+          <motion.div className="flex-grow flex flex-col gap-4 pt-0 relative"
             initial={{ opacity: 0, top: 20 }}
             animate={{ opacity: 1, top: 0 }}
             transition={{ duration: 0.5, delay: (guesses.length+1.5)*0.5 }}>
             <Button variant="outline" asChild>
               <Link href="/stats">
                 <BarChartIcon className="mr-2 h-4 w-4" /> Stats
-              </Link>
+              </Link> 
             </Button>
-          </motion.div> */}
+          </motion.div>
 
         </div>
       </div>

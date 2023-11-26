@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Challenge, Guess } from "../types"
+import { Challenge, Guess } from "../types/app"
 import { renderElapsed } from "@/lib/utils"
 
 type GuessSummaryProps = {
