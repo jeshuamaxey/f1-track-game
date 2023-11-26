@@ -13,15 +13,22 @@ import GuessSummary from "./guess-summary";
 import config from "../config.json"
 import useGameState from "@/lib/useGameState";
 import { User } from "@supabase/supabase-js";
+import { Database } from "../types/supabase";
 
 const challenges = generateChallenges(config.N_CHALLENGES)
 
-const GamePlayer = ({user}: {user?: User | null}) => {
-  const [gameState, saveGame] = useGameState({user})
+type GamePlayerProps = {
+  dailyResults: Database["public"]["Tables"]["daily_results"]["Row"][]
+}
+
+const GamePlayer = ({dailyResults}: GamePlayerProps) => {
+  const [gameState, saveGame] = useGameState({})
   const {guesses, circuitIndex} = gameState
 
   const [svgScope, svgAnimate] = useAnimate()
 
+  const [lightsInterval, setLightsInterval] = useState<NodeJS.Timeout>()
+  const [lightsStarted, setLightsStarted] = useState(false)
   const [gameStarted, setGameStarted] = useState(false)
   const [lightsIndex, setLightsIndex] = useState(0)
   const [correctGuess, setCorrectGuess] = useState(false)
@@ -108,22 +115,32 @@ const GamePlayer = ({user}: {user?: User | null}) => {
   }
 
   const startLights = () => {
+    console.log("start lights")
+    setLightsStarted(true)
+
     const interval = setInterval(() => {
-      if(lightsIndex === 5) {
-        startGame()
-        clearTimeout(interval)
-      } else {
-        setLightsIndex(lightsIndex+1)
-      }
+      setLightsIndex((prev) => prev+1)
     }, 1000)
 
+    setLightsInterval(interval)
     return () => clearInterval(interval);
   }
 
-  useEffect(startLights, [lightsIndex])
+  // kick off the lights
+  if(guesses.length !== challenges.length && !lightsStarted) {
+    startLights()
+  }
+
+  // stop lights after index reaches 5
+  useEffect(() => {
+    if(lightsIndex === 6) {
+      console.log("stop lights")
+      startGame()
+      clearTimeout(lightsInterval)
+    }
+  }, [lightsIndex])
 
   const timer = renderElapsed(elapsed)
-
   const scoreEmojis = getScoreEmojis(challenges.length, guesses)
 
   return (

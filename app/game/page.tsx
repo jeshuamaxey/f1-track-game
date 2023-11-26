@@ -10,5 +10,11 @@ export default async function Index() {
   const supabase = createClient(cookieStore)
 
   const { data: { user }, error: userError} = await supabase.auth.getUser()
-  return <GamePlayer user={user} />
+  const { data, error } = await supabase.from("daily_results").select("*")
+
+  if(userError || error) {
+    return <p className="text-center">Something went wrong :(</p>
+  }
+
+  return <GamePlayer dailyResults={data} />
 }
