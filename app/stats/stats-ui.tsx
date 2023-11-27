@@ -9,7 +9,7 @@ const nDays = 7
 
 const StatsUI = ({dailyResults}: StatsProps) => {
   const today = new Date()
-  Array.from({length: 5}, (v, i) => i)
+
   const lastNDays = Array.from({length: nDays}, (_, i) => {
     const d = new Date(today.getTime() - i*1000*60*60*24)
     const dateKey = getDateKey(d)
@@ -20,6 +20,7 @@ const StatsUI = ({dailyResults}: StatsProps) => {
     }
   })
 
+  const nResults = lastNDays.filter(res => !!res.result).length
   const averages = lastNDays.reduce((av, day) => {
     if(!day.result) return av
 
@@ -31,7 +32,7 @@ const StatsUI = ({dailyResults}: StatsProps) => {
     return {
       elapsed: roundTo(av.elapsed + (totalElapsed/nGuesses), 0),
       pc: roundTo(av.pc + (totalPc/nGuesses), 2),
-      correct: av.correct + (nCorrect/(nDays * nGuesses))
+      correct: av.correct + (nCorrect/(nResults * nGuesses))
     }
   }, {
     elapsed: 0,
