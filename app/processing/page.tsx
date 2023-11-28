@@ -12,11 +12,13 @@ export default async function Processing() {
   const supabase = createClient(cookieStore)
 
   const { data: { user }, error: userError} = await supabase.auth.getUser()
-  const { data: backendResults, error } = await supabase.from("daily_results").select("*")
+  const { data: dailyResults, error: dailyResultsError } = await supabase.from("daily_results").select("*")
 
-  if(!user || !backendResults) {
+  if(!user || !dailyResults) {
+    console.log("error", dailyResultsError?.message)
+    console.log("userError", userError?.message)
     redirect("/login?message=error_occured")
   }
 
-  return <ProcessDataPostAuth user={user} backendResults={backendResults} />
+  return <ProcessDataPostAuth user={user} backendResults={dailyResults} />
 }

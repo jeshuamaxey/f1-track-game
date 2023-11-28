@@ -17,6 +17,7 @@ const ProcessDataPostAuth = ({
   user,
   backendResults
 }: ProcessDataPostAuthProps) => {
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
   const [uiError, setUiError] = useState<string | null>(null)
 
@@ -83,6 +84,7 @@ const ProcessDataPostAuth = ({
   // local data clashes with backend data
   else if (clashes.length > 0) {
     console.log("local data clashes with backend data")
+    setLoading(true)
   }
 
   if(uiError) {
@@ -95,7 +97,15 @@ const ProcessDataPostAuth = ({
     </div>
   }
 
-  return <ClashResolver localDays={localDays} clashes={clashes} user={user} allLocalResults={allLocalResults}/>
+  return loading ? (
+    <div className="h-full flex flex-col align-middle p-4 gap-8">
+      <h1 className="text-3xl mx-auto">Loading your profile...</h1>
+    </div>
+  ) : <ClashResolver
+    localDays={localDays}
+    clashes={clashes}
+    user={user}
+    allLocalResults={allLocalResults} />
 }
 
 export default ProcessDataPostAuth

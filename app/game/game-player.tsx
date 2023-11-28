@@ -146,10 +146,10 @@ const GamePlayer = ({dailyResults}: GamePlayerProps) => {
   const scoreEmojis = getScoreEmojis(challenges.length, guesses)
 
   return (
-    <div className="min-h-screen h-screen w-full flex flex-col bg-slate-950">
+    <div className="min-h-screen max-h-screen h-screen w-full flex flex-col bg-slate-950">
       {/* TIMER */}
 
-      <motion.div className="flex flex-row p-4"
+      <motion.div className="flex flex-row h-14 p-4"
         initial={{y: -40}}
         animate={{y: 0}}
         >
@@ -160,7 +160,7 @@ const GamePlayer = ({dailyResults}: GamePlayerProps) => {
 
 
       {/* CIRCUIT */}
-      <div className="h-3/5 w-full px-2 flex flex-row items-center bg-slate-900">
+      <div className="h-1/2 w-full px-2 flex flex-row items-center bg-slate-900">
         <motion.svg
           ref={svgScope}
           className={cn("max-w-full max-h-full mx-auto", gameStarted ? "visible" : "hidden")}
@@ -209,12 +209,12 @@ const GamePlayer = ({dailyResults}: GamePlayerProps) => {
       {/* OPTION BUTTONS */}
       <AnimatePresence>
       {gameStarted && !guessMade && (
-        <div className="flex flex-row p-4 gap-2 flex-wrap justify-center w-full">
+        <div className="flex flex-row max-h-50 px-4 py-4 gap-2 flex-wrap justify-center w-full overflow-y-scroll">
           {challenges[circuitIndex].options.map((option, index) => (
             <motion.div key={index}
-              className="relative"
-              initial={{ top: 20, opacity: 0 }}
-              animate={{ top: 0, opacity: 1, transition: { delay: index*0.1 } }}
+            className="relative"
+            initial={{ top: 20, opacity: 0 }}
+            animate={{ top: 0, opacity: 1, transition: { delay: index*0.1 } }}
             >
               <Button
                 size="sm"
