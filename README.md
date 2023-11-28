@@ -4,7 +4,7 @@ ere we go!
 
 ## to do
 
-- [ ] gameplay
+- [x] gameplay
   - [x] start screen
     - [x] play button
     - [x] animate out into gameplay
@@ -18,15 +18,15 @@ ere we go!
     - [ ] add vegas and miami
   - [ ] game state
     - [x] store all results in local storage prior to login
->>  - [ ] signup after play
-    - [ ] store game state in backend
+    - [ ] signup after play
+    - [x] store game state in backend
     - [x] store daily results
     - [x] prohibit same day replays
     - [ ] move challenge generation to backend
 
 - [ ] sharing
   - [ ] og image
-  - [ ] favicon
+  - [x] favicon
   - [x] share score to socials
 
 - [ ] thanks
@@ -34,7 +34,7 @@ ere we go!
   - [ ] F1 fonts https://imjustcreative.com/download-f1-fonts-formula-1-fonts/2021/09/16
 
 - [ ] post launch
-  - [ ] stats
+  - [x] stats
 
 BUGS:
 
@@ -44,4 +44,5 @@ BUGS:
 - [x] correct answer is always first option
 - [x] render elapsed without loads of decimals
 - [x] resetting the start lights
+- [ ] make one guess > navigate to another page via address > navigate back to /game > it's possible to mkae 3 more guesses
 

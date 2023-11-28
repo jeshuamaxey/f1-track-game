@@ -132,7 +132,6 @@ export default function Login({
       )}
       {searchParams?.emailDomain && searchParams?.emailDomain === "gmail.com" && <Button asChild><Link href={`https://${searchParams.emailDomain}`}>Open Gmail</Link></Button>}
       {searchParams?.emailDomain && searchParams?.emailDomain === "outlook.com" && <Button asChild><Link href={`https://${searchParams.emailDomain}`}>Open outlook</Link></Button>}
-      {searchParams?.postSignUpMessage && <Button asChild><Link href="/processing">Continue for now</Link></Button>}
     </div>
   )
 }
