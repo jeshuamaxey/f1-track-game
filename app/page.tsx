@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import Navbar from "@/components/navbar";
 import { cookies } from "next/headers";
 import { createClient } from '@/utils/supabase/server'
-import { getDateKey } from "@/lib/utils";
 
 // disable SSR for game player as game state can be stored in local storage
 const HomeScreen = dynamic(() => import('@/components/home-screen'), { ssr: false })

@@ -1,5 +1,9 @@
+"use client"
+
 import { getChallengeNumber, getDateKey, getScoreEmojis, renderElapsed, roundTo } from "@/lib/utils"
 import { Database } from "../types/supabase"
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 type StatsProps = {
   dailyResults: Database["public"]["Tables"]["daily_results"]["Row"][]
@@ -42,22 +46,34 @@ const StatsUI = ({dailyResults}: StatsProps) => {
   
   return (
     <div className="flex flex-col">
-      <div className="pb-6">
+      <motion.div className="pb-6"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0 }}>
         <p className="text-sm text-foreground/80 pb-2">Correct guesses</p>
         <p className="font-f1-wide text-2xl">{roundTo(100*averages.correct, 0)}%</p>
-      </div>
+      </motion.div>
 
-      <div className="pb-6">
+      <motion.div className="pb-6"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.1 }}>
         <p className="text-sm text-foreground/80 pb-2">Average time to complete</p>
         <p className="font-f1-wide text-2xl">{renderElapsed(averages.elapsed)}</p>
-      </div>
+      </motion.div>
         
-      <div className="pb-6">
+      <motion.div className="pb-6"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.2 }}>
         <p className="text-sm text-foreground/80 pb-2">Average track revealed</p>
         <p className="font-f1-wide text-2xl">{roundTo(100*averages.pc, 2)}%</p>
-      </div>
+      </motion.div>
 
-      <div className="pb-6">
+      <motion.div className="pb-6"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.3}}>
         <table className="table-auto w-full">
           <thead>
               <tr className="">
@@ -69,7 +85,9 @@ const StatsUI = ({dailyResults}: StatsProps) => {
           {
             lastNDays.map(res => {
               const { result, dateKey } = res
-              const emojis = result ? getScoreEmojis(result.guesses.length, result.guesses) : "DNS"
+              const isToday = dateKey === getDateKey()
+              const emojis = result ? getScoreEmojis(result.guesses.length, result.guesses): isToday
+                                    ? <Link href="/game">Play now</Link> : "DNS"
               return (
                 <tr key={dateKey} className="odd:bg-slate-900">
                   <td className="py-1 text-sm">{getChallengeNumber(dateKey)}</td>
@@ -80,7 +98,7 @@ const StatsUI = ({dailyResults}: StatsProps) => {
           }
           </tbody>
         </table>
-      </div>
+      </motion.div>
     </div>
   )
 }
