@@ -4,7 +4,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "gen-types": "npx supabase gen types typescript --local --schema public > app/types/supabase.autogen.ts"
+    "gen-types": "npx supabase gen types typescript --local > app/types/supabase.autogen.ts"
   },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^1.0.3",
