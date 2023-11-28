@@ -82,7 +82,14 @@ export function generateChallenges(n: number): Challenge[] {
     })
   }
 
-  return challenges
+  const longOptions = circuits.filter(c => ["bahrain", "china", "canada", "mexico"].includes(c.value))
+    .map(c => {
+      return {
+      ...c,
+      correct: false
+    }})
+
+  return [{...challenges[0], options: longOptions}, challenges[1], challenges[2]]
 }
 
 export function calculateTotalElapsed(guesses: Guess[]): number {
