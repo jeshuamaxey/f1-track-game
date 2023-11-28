@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 export default function Login({
   searchParams,
 }: {
-  searchParams: { message: string }
+  searchParams: { errorMessage: string, postSignUpMessage: string, emailDomain: string }
 }) {
   const signIn = async (formData: FormData) => {
     'use server'
@@ -23,7 +23,7 @@ export default function Login({
     })
 
     if (error) {
-      return redirect('/login?message=Could not authenticate user')
+      return redirect('/login?errorMessage=Could not authenticate user')
     }
 
     return redirect('/processing')
@@ -47,11 +47,18 @@ export default function Login({
     })
 
     if (error) {
-      return redirect('/login?message=Could not authenticate user')
+      if(error.message === "User already registered") {
+        return redirect('/login?errorMessage=Email already in use. Try signing in')
+      } else {
+        return redirect('/login?errorMessage=Could not authenticate user')
+      }
     }
 
-    return redirect('/login?message=Check email to continue sign in process')
+    const domain = email.split('@')[1]
+    return redirect(`/login?postSignUpMessage=We have sent you an email to verify your profile. Please check your email (including your spam) to continue.&emailDomain=${domain}`)
   }
+
+  const showForm = !searchParams.postSignUpMessage
 
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
@@ -76,7 +83,7 @@ export default function Login({
         Back
       </Link>
 
-      <form
+      {showForm && <form
         className="animate-in flex-1 flex flex-col w-full justify-center gap-2"
         action={signIn}
       >
@@ -109,12 +116,22 @@ export default function Login({
         >
           Sign Up
         </Button>
-        {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-center border-l-4 border-slate-600">
-            {searchParams.message}
+        {searchParams?.errorMessage && (
+          <p className="mt-4 p-4 bg-foreground/10 text-center border-l-4 border-red-500">
+            {searchParams.errorMessage}
           </p>
         )}
       </form>
+      }
+
+      {/* POST SIGNUP UI */}
+      {searchParams?.postSignUpMessage && (
+        <p className="my-4 p-4 bg-foreground/10 text-center border-l-4 border-slate-600">
+          {searchParams.postSignUpMessage}
+        </p>
+      )}
+      {searchParams?.emailDomain && searchParams?.emailDomain === "gmail.com" && <Button asChild><Link href={`https://${searchParams.emailDomain}`}>Open Gmail</Link></Button>}
+      {searchParams?.emailDomain && searchParams?.emailDomain === "outlook.com" && <Button asChild><Link href={`https://${searchParams.emailDomain}`}>Open outlook</Link></Button>}
     </div>
   )
 }
