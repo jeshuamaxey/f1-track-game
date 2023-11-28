@@ -1,4 +1,4 @@
-import { Challenge, Guess } from "@/app/types"
+import { Challenge, Guess } from "@/app/types/app"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import gen from "random-seed"
@@ -13,6 +13,20 @@ export const padNum = (num: number, zeros: number) => {
   return String(num).padStart(zeros, "0")
 }
 
+export const getDateKey = (date?: Date) : string => {
+  const d = date ? date : new Date()
+  return d.toISOString().split("T")[0]
+}
+
+export const getChallengeNumber = (dateKey?: string) => {
+  const d = dateKey || getDateKey()
+  const nDays = Math.round((new Date(d).getTime() - new Date(config.DATE_OF_GAME_ONE).getTime()) / (1000 * 60 * 60 * 24));
+  return padNum(nDays, 3)
+}
+
+/*
+ * @ t: number duration in millisecond
+ **/
 export const renderElapsed = (t: number) => {
   const ms = t % 1000
   const secs = (t-ms)/1000 % 60
@@ -75,12 +89,18 @@ export function calculateTotalElapsed(guesses: Guess[]): number {
   return guesses.reduce((total, guess) => total+(guess.option.correct ? guess.elapsed : config.DURATION*1000), 0)
 }
 
-export function getScoreEmojis(challenges: Challenge[], guesses: Guess[]) {
-  return challenges.map((challenge, i) => {
+export function getScoreEmojis(nChallenges: number, guesses: Guess[]) {
+  let i = 0
+  const score = []
+
+  while(i<nChallenges) {
     if(guesses[i]) {
-      return guesses[i].option.correct ? "🟢" : "🔴"
+      score.push(guesses[i].option.correct ? "🟢" : "🔴")
     } else {
-      return "⬜️"
+      score.push("⬜️")
     }
-  }).join(" ")
+    i++;
+  }
+  
+  return score.join(" ")
 }

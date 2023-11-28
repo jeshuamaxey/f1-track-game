@@ -6,25 +6,34 @@ export const dynamic = "force-dynamic"
 import { AnimatePresence, AnimationPlaybackControls, motion, useAnimate } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cn, generateChallenges, getScoreEmojis, renderElapsed, roundTo } from "@/lib/utils";
+import { cn, generateChallenges, getDateKey, getScoreEmojis, renderElapsed, roundTo } from "@/lib/utils";
 import SummarySplash from "./summary-splash";
-import { Challenge } from "../types";
+import { Challenge, sbDailyResult } from "../types/app";
 import GuessSummary from "./guess-summary";
 import config from "../config.json"
 import useGameState from "@/lib/useGameState";
 
 const challenges = generateChallenges(config.N_CHALLENGES)
 
-const GamePlayer = ({}) => {
-  const [gameState, saveGame] = useGameState()
+type GamePlayerProps = {
+  dailyResults: sbDailyResult[]
+}
+
+const GamePlayer = ({dailyResults}: GamePlayerProps) => {
+  const todaysDateKey = getDateKey()
+  const todaysGame = dailyResults.find(res => res.date_key === todaysDateKey)
+  
+  const [gameState, saveGame] = useGameState({dailyResults})
   const {guesses, circuitIndex} = gameState
 
   const [svgScope, svgAnimate] = useAnimate()
 
+  const [lightsInterval, setLightsInterval] = useState<NodeJS.Timeout>()
+  const [lightsStarted, setLightsStarted] = useState(false)
   const [gameStarted, setGameStarted] = useState(false)
   const [lightsIndex, setLightsIndex] = useState(0)
   const [correctGuess, setCorrectGuess] = useState(false)
-  const [gameOver, setGameOver] = useState(guesses.length === challenges.length)
+  const [gameOver, setGameOver] = useState(todaysGame || guesses.length === challenges.length)
 
   const [animations, setAnimations] = useState<{[key: string]: AnimationPlaybackControls}>({})
   
@@ -100,6 +109,7 @@ const GamePlayer = ({}) => {
       setGuessMade(false)
       setElapsed(0)
       setLightsIndex(0)
+      startLights()
     } else {
       console.log("game over")
       setGameOver(true)
@@ -107,27 +117,38 @@ const GamePlayer = ({}) => {
   }
 
   const startLights = () => {
+    console.log("start lights")
+    setLightsStarted(true)
+
     const interval = setInterval(() => {
-      if(lightsIndex === 5) {
-        startGame()
-        clearTimeout(interval)
-      } else {
-        setLightsIndex(lightsIndex+1)
-      }
+      setLightsIndex((prev) => prev+1)
     }, 1000)
 
+    setLightsInterval(interval)
     return () => clearInterval(interval);
   }
 
-  useEffect(startLights, [lightsIndex])
+  // kick off the lights
+  if(guesses.length !== challenges.length && !lightsStarted) {
+    startLights()
+  }
+
+  // stop lights after index reaches 5
+  useEffect(() => {
+    if(lightsIndex === 6) {
+      console.log("stop lights")
+      startGame()
+      clearTimeout(lightsInterval)
+    }
+  }, [lightsIndex])
 
   const timer = renderElapsed(elapsed)
-
-  const scoreEmojis = getScoreEmojis(challenges, guesses)
+  const scoreEmojis = getScoreEmojis(challenges.length, guesses)
 
   return (
     <div className="min-h-screen h-screen w-full flex flex-col bg-slate-950">
       {/* TIMER */}
+
       <motion.div className="flex flex-row p-4"
         initial={{y: -40}}
         animate={{y: 0}}
@@ -136,6 +157,7 @@ const GamePlayer = ({}) => {
         <div className="flex-grow"></div>
         <div className="text-slate-50 tabular-nums">{timer}</div>
       </motion.div>
+
 
       {/* CIRCUIT */}
       <div className="h-3/5 w-full px-2 flex flex-row items-center bg-slate-900">

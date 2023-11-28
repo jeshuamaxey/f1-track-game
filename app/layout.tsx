@@ -1,4 +1,3 @@
-import { GeistSans } from 'geist/font/sans'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Analytics } from '@vercel/analytics/react';
@@ -9,7 +8,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: 'F1 track guesser',
+  title: 'F1 tracks game',
   description: 'Identify 3 F1 tracks as fast as you can. New challenges daily',
 }
 
@@ -19,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={GeistSans.className}>
+    <html lang="en" suppressHydrationWarning>
       <body className="bg-slate-950 text-slate-50 font-f1">
         <ThemeProvider
             attribute="class"
