@@ -33,7 +33,7 @@ ere we go!
   - [ ] F1 laps for the svgs
   - [ ] F1 fonts https://imjustcreative.com/download-f1-fonts-formula-1-fonts/2021/09/16
 
-- [ ] post launch
+- [x] post launch
   - [x] stats
 
 BUGS:

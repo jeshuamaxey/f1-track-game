@@ -144,10 +144,11 @@ const HomeScreen = ({dailyResults}: HomeScreenProps) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, y: 40 }}
           transition={{ ease: "easeOut", duration: .4, delay: 0.2 }}>
-          <div className="flex flex-col gap-2 text-xs text-center text-slate-400">
-            <p>F1 tracks is not affiliated with F1 in any way.</p>
-            <p>It was built by <Link className="underline hover:text-slate-100" href="https://twitter.com/jeshuamaxey">Jeshua Maxey</Link>, a big F1 fan.</p>
+          <div className="flex flex-col gap-2 text-s text-center text-slate-400">
+            <p>F1 tracks is not affiliated with F1.</p>
+            <p>It was built by <Link className="underline hover:text-slate-100" href="https://twitter.com/jeshuamaxey">Jeshua Maxey</Link>, a big fan.</p>
             <p><Link className="underline hover:text-slate-100" href="https://buy.stripe.com/cN229p9UPdTo3tu5kk">Support this project.</Link></p>
+            <p><Link className="underline hover:text-slate-100" href="/thanks">Credits</Link></p>
           </div>
         </motion.div>
       )}
