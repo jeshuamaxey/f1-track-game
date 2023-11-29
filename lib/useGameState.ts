@@ -64,7 +64,11 @@ export const getAllGames = ({complete}: {complete?: boolean}) => {
   return games
 }
 
-const useGameState = ({date, dailyResults}: {date?: string, dailyResults?: sbDailyResult[]}): [
+const useGameState = ({
+  date,
+  dailyResults,
+  user
+}: {date?: string, dailyResults?: sbDailyResult[], user?: User | null}): [
   GameState,
   (newState: Partial<GameState>) => void,
   () => void
@@ -84,7 +88,7 @@ const useGameState = ({date, dailyResults}: {date?: string, dailyResults?: sbDai
     }
   }, {} as AllGameStates) : {}
 
-  const saveGame = async (newState: Partial<GameState>, user?: User) => {
+  const saveGame = async (newState: Partial<GameState>) => {
     console.log("saveGame()", {newState})
     const allLocalGameStates = _getAllLocalGameStates()
     const currentState = allLocalGameStates ? allLocalGameStates[dateKey] : {}

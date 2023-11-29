@@ -17,7 +17,7 @@ export default async function Processing() {
   if(!user || !dailyResults) {
     console.log("error", dailyResultsError?.message)
     console.log("userError", userError?.message)
-    redirect("/login?message=error_occured")
+    redirect("/login?errorMessage=Please login to continue")
   }
 
   return <ProcessDataPostAuth user={user} backendResults={dailyResults} />

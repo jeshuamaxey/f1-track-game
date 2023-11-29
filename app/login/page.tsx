@@ -42,7 +42,7 @@ export default function Login({
       email,
       password,
       options: {
-        emailRedirectTo: `${origin}/auth/callback`,
+        emailRedirectTo: `${origin}/auth/callback?postSignUp=1`,
       },
     })
 
@@ -130,8 +130,6 @@ export default function Login({
           {searchParams.postSignUpMessage}
         </p>
       )}
-      {searchParams?.emailDomain && searchParams?.emailDomain === "gmail.com" && <Button asChild><Link href={`https://${searchParams.emailDomain}`}>Open Gmail</Link></Button>}
-      {searchParams?.emailDomain && searchParams?.emailDomain === "outlook.com" && <Button asChild><Link href={`https://${searchParams.emailDomain}`}>Open outlook</Link></Button>}
     </div>
   )
 }
