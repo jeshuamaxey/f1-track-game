@@ -126,12 +126,9 @@ export default function Login({
 
       {/* POST SIGNUP UI */}
       {searchParams?.postSignUpMessage && (
-        <>
-          <p className="my-4 p-4 bg-foreground/10 text-center border-l-4 border-slate-600">
-            {searchParams.postSignUpMessage}
-          </p>
-          <Button asChild><Link href={`/processing`}>Continue for now</Link></Button>
-        </>
+        <p className="my-4 p-4 bg-foreground/10 text-center border-l-4 border-slate-600">
+          {searchParams.postSignUpMessage}
+        </p>
       )}
     </div>
   )
