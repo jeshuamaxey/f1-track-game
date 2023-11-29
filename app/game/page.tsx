@@ -22,5 +22,5 @@ export default async function Index() {
     return <p className="text-center">Something went wrong :(</p>
   }
 
-  return <GamePlayer dailyResults={dailyResults} />
+  return <GamePlayer dailyResults={dailyResults} user={user} />
 }
