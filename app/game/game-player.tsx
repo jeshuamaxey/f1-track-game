@@ -12,18 +12,20 @@ import { Challenge, sbDailyResult } from "../types/app";
 import GuessSummary from "./guess-summary";
 import config from "../config.json"
 import useGameState from "@/lib/useGameState";
+import { User } from "@supabase/supabase-js";
 
 const challenges = generateChallenges(config.N_CHALLENGES)
 
 type GamePlayerProps = {
-  dailyResults: sbDailyResult[]
+  dailyResults: sbDailyResult[],
+  user?: User | null
 }
 
-const GamePlayer = ({dailyResults}: GamePlayerProps) => {
+const GamePlayer = ({dailyResults, user}: GamePlayerProps) => {
   const todaysDateKey = getDateKey()
   const todaysGame = dailyResults.find(res => res.date_key === todaysDateKey)
   
-  const [gameState, saveGame] = useGameState({dailyResults})
+  const [gameState, saveGame] = useGameState({dailyResults, user})
   const {guesses, circuitIndex} = gameState
 
   const [svgScope, svgAnimate] = useAnimate()
