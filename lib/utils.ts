@@ -52,7 +52,9 @@ export function generateChallenges(n: number): Challenge[] {
   while(challenges.length < n) {
     const circuit = circuits[rand.range(circuits.length)]
     const alreadyPicked = challenges.map(c => c.circuit.value).indexOf(circuit.value) > -1
-    if(alreadyPicked) continue;
+    if(alreadyPicked) {
+      continue;
+    }
 
     const options: Challenge["options"] = [{
       name: circuit.name,
