@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import { headers, cookies } from 'next/headers'
+import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import posthog from "posthog-js"
 
 export default function Login({
   searchParams,
@@ -17,7 +18,7 @@ export default function Login({
     const cookieStore = cookies()
     const supabase = createClient(cookieStore)
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data: {user}, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
@@ -25,6 +26,8 @@ export default function Login({
     if (error) {
       return redirect('/login?errorMessage=Could not authenticate user')
     }
+
+    user && posthog.identify( user.id, { email: user.id} );
 
     return redirect('/processing')
   }

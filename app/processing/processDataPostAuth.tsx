@@ -7,10 +7,11 @@ import { Database } from "../types/supabase"
 import { User } from "@supabase/supabase-js"
 import ClashResolver from "./clashResolver"
 import { useState } from "react"
+import { sbDailyResult } from "../types/app"
 
 type ProcessDataPostAuthProps = {
   user: User
-  backendResults: Database["public"]["Tables"]["daily_results"]["Row"][]
+  backendResults: sbDailyResult[]
 }
 
 const ProcessDataPostAuth = ({
@@ -21,7 +22,6 @@ const ProcessDataPostAuth = ({
   const router = useRouter()
   const [uiError, setUiError] = useState<string | null>(null)
 
-  // THESE ARE THE 2x OFFENDING LINES OF CODE
   const [,,clearGameStates] = useGameState({})
   const allLocalResults = getAllGames({complete: true})
   
