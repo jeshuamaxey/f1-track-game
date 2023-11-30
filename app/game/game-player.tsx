@@ -124,7 +124,7 @@ const GamePlayer = ({dailyResults, user}: GamePlayerProps) => {
 
     const interval = setInterval(() => {
       setLightsIndex((prev) => prev+1)
-    }, 1000)
+    }, 700)
 
     setLightsInterval(interval)
     return () => clearInterval(interval);

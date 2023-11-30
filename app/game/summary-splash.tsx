@@ -39,7 +39,7 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
             return <motion.div key={challenge.circuit.viewBox}
               initial={{ opacity: 0, top: 20 }}
               animate={{ opacity: 1, top: 0 }}
-              transition={{ duration: 0.5, delay: index*0.5 }}
+              transition={{ duration: 0.2, delay: index*0.2 }}
               className={cn(
                 "relative flex flex-row gap-4 p-4 border rounded", guess.option.correct
                 ? "bg-slate-900 border-green-800"
@@ -84,14 +84,14 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
         <motion.div className="flex flex-col gap-4 p-4 pt-0 relative"
           initial={{ opacity: 0, top: 20 }}
           animate={{ opacity: 1, top: 0 }}
-          transition={{ duration: 0.5, delay: guesses.length*0.5 }}>
+          transition={{ duration: 0.2, delay: guesses.length*0.2 }}>
           <ShareButton guesses={guesses} />
         </motion.div>
         <div className="w-full flex flex-row gap-4 px-4">
           <motion.div className="flex-grow flex flex-col gap-4 pt-0 relative"
             initial={{ opacity: 0, top: 20 }}
             animate={{ opacity: 1, top: 0 }}
-            transition={{ duration: 0.5, delay: (guesses.length+1)*0.5 }}>
+            transition={{ duration: 0.2, delay: (guesses.length+1)*0.2 }}>
             <Button variant="outline" asChild>
             <Link href="/">
               <CaretLeftIcon className="mr-2 h-4 w-4" /> Home
@@ -102,7 +102,7 @@ const SummarySplash = ({ challenges, guesses }: SummarySplashProps) => {
           <motion.div className="flex-grow flex flex-col gap-4 pt-0 relative"
             initial={{ opacity: 0, top: 20 }}
             animate={{ opacity: 1, top: 0 }}
-            transition={{ duration: 0.5, delay: (guesses.length+1.5)*0.5 }}>
+            transition={{ duration: 0.2, delay: (guesses.length+1.5)*0.2 }}>
             <Button variant="outline" asChild>
               <Link href="/stats">
                 <BarChartIcon className="mr-2 h-4 w-4" /> Stats
