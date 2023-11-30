@@ -9,7 +9,13 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: 'F1 tracks game',
-  description: 'Identify 3 F1 tracks as fast as you can. New challenges daily',
+  description: 'Identify 3 F1 tracks. Fastest time wins. New challenges daily',
+  openGraph: {
+    title: 'F1 tracks game',
+    description: 'Identify 3 F1 tracks. Fastest time wins. New challenges daily',
+    type: 'website',
+    images: ["./img/og-img.png"]
+  }
 }
 
 export default function RootLayout({
