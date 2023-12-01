@@ -13,6 +13,8 @@ import GuessSummary from "./guess-summary";
 import config from "../config.json"
 import useGameState from "@/lib/useGameState";
 import { User } from "@supabase/supabase-js";
+import useAnalytics from "@/lib/useAnalytics";
+import EVENTS from "@/lib/events";
 
 const challenges = generateChallenges(config.N_CHALLENGES)
 
@@ -22,6 +24,8 @@ type GamePlayerProps = {
 }
 
 const GamePlayer = ({dailyResults, user}: GamePlayerProps) => {
+  const analytcs = useAnalytics()
+
   const todaysDateKey = getDateKey()
   const todaysGame = dailyResults.find(res => res.date_key === todaysDateKey)
   
@@ -45,6 +49,11 @@ const GamePlayer = ({dailyResults, user}: GamePlayerProps) => {
 
   const startGame = () => {
     console.log("start game")
+
+    if(circuitIndex === 0) {
+      analytcs.capture(EVENTS.game_started, { dateKey: todaysDateKey})
+    }
+
     // set up clock
     const startTime = new Date().getTime()
     setTimerInterval(setInterval(() => {
@@ -96,6 +105,8 @@ const GamePlayer = ({dailyResults, user}: GamePlayerProps) => {
 
     console.log("guess made", guess)
 
+    analytcs.capture(EVENTS.guess_made, { guess })
+
     saveGame({guesses: [...guesses, guess]})
 
     animations.game.pause()
@@ -114,6 +125,7 @@ const GamePlayer = ({dailyResults, user}: GamePlayerProps) => {
       startLights()
     } else {
       console.log("game over")
+      analytcs.capture(EVENTS.game_completed, { dateKey: todaysDateKey})
       setGameOver(true)
     }
   }
