@@ -6,22 +6,23 @@ import { useRouter } from "next/navigation"
 import { Database } from "../types/supabase"
 import { User } from "@supabase/supabase-js"
 import ClashResolver from "./clashResolver"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { sbDailyResult } from "../types/app"
+import useAnalytics from "@/lib/useAnalytics"
 
 type ProcessDataPostAuthProps = {
   user: User
-  backendResults: Database["public"]["Tables"]["daily_results"]["Row"][]
+  backendResults: sbDailyResult[]
 }
 
 const ProcessDataPostAuth = ({
   user,
   backendResults
 }: ProcessDataPostAuthProps) => {
-  const [loading, setLoading] = useState(true)
+  const analytics = useAnalytics()
   const router = useRouter()
   const [uiError, setUiError] = useState<string | null>(null)
 
-  // THESE ARE THE 2x OFFENDING LINES OF CODE
   const [,,clearGameStates] = useGameState({})
   const allLocalResults = getAllGames({complete: true})
   
@@ -29,6 +30,10 @@ const ProcessDataPostAuth = ({
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
+
+  useEffect(() => {
+    analytics.identify(user);
+  }, [])
 
   const backendDays = backendResults.map(res => res.date_key)
   const localDays = Object.keys(allLocalResults)
@@ -44,6 +49,7 @@ const ProcessDataPostAuth = ({
   if(localDays.length === 0) {
     console.log("no local data to deal with")
     router.push("/stats")
+    return <></>
   }
   
   // local data doesn't clash with backend
@@ -84,7 +90,11 @@ const ProcessDataPostAuth = ({
   // local data clashes with backend data
   else if (clashes.length > 0) {
     console.log("local data clashes with backend data")
-    setLoading(true)
+    return <ClashResolver
+      localDays={localDays}
+      clashes={clashes}
+      user={user}
+      allLocalResults={allLocalResults} />
   }
 
   if(uiError) {
@@ -97,15 +107,11 @@ const ProcessDataPostAuth = ({
     </div>
   }
 
-  return loading ? (
+  return (
     <div className="h-full flex flex-col align-middle p-4 gap-8">
       <h1 className="text-3xl mx-auto">Loading your profile...</h1>
     </div>
-  ) : <ClashResolver
-    localDays={localDays}
-    clashes={clashes}
-    user={user}
-    allLocalResults={allLocalResults} />
+  )
 }
 
 export default ProcessDataPostAuth
