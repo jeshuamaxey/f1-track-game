@@ -20,7 +20,7 @@ export default async function AuthButton() {
     const supabase = createClient(cookieStore)
     await supabase.auth.signOut()
     posthog.reset()
-    return redirect('/login')
+    return redirect('/login?logoutSuccessful=1')
   }
 
   return user ? (

@@ -3,13 +3,14 @@ import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import posthog from "posthog-js"
+import ResetAnalytics from '@/components/reset-analytics'
 
 export default function Login({
   searchParams,
 }: {
-  searchParams: { errorMessage: string, emailDomain: string }
+  searchParams: { logoutSuccessful: string, errorMessage: string, emailDomain: string }
 }) {
+
   const signIn = async (formData: FormData) => {
     'use server'
 
@@ -27,13 +28,16 @@ export default function Login({
       return redirect('/login?errorMessage=Could not authenticate user')
     }
 
-    user && posthog.identify( user.id, { email: user.id} );
-
     return redirect('/processing')
   }
 
+  console.log(searchParams.logoutSuccessful)
+  console.log(!!searchParams.logoutSuccessful)
+
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+      {searchParams.logoutSuccessful && <ResetAnalytics /> }
+
       <Link
         href="/"
         className="absolute left-8 top-8 py-2 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"

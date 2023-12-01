@@ -6,8 +6,9 @@ import { useRouter } from "next/navigation"
 import { Database } from "../types/supabase"
 import { User } from "@supabase/supabase-js"
 import ClashResolver from "./clashResolver"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { sbDailyResult } from "../types/app"
+import useAnalytics from "@/lib/useAnalytics"
 
 type ProcessDataPostAuthProps = {
   user: User
@@ -18,7 +19,7 @@ const ProcessDataPostAuth = ({
   user,
   backendResults
 }: ProcessDataPostAuthProps) => {
-  const [loading, setLoading] = useState(true)
+  const analytics = useAnalytics()
   const router = useRouter()
   const [uiError, setUiError] = useState<string | null>(null)
 
@@ -29,6 +30,10 @@ const ProcessDataPostAuth = ({
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
+
+  useEffect(() => {
+    analytics.identify(user);
+  }, [])
 
   const backendDays = backendResults.map(res => res.date_key)
   const localDays = Object.keys(allLocalResults)
