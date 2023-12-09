@@ -12,7 +12,7 @@ INSERT INTO auth.identities (id,user_id,identity_data,provider,last_sign_in_at,c
 
 INSERT INTO public.daily_results (date_key, user_id, guesses)
 VALUES
-  ('2023-11-23', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '[{
+  ('2023-12-09', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '[{
     "option": {
       "name": "Suzuka",
       "value": "japan_suzuka",
@@ -21,7 +21,7 @@ VALUES
       "correct": true
     },
     "elapsed": 6441,
-    "percentComplete": 0.21
+    "percentComplete": 0.88
   },
   {
     "option": {
@@ -32,7 +32,7 @@ VALUES
       "correct": true
     },
     "elapsed": 3635,
-    "percentComplete": 0.12
+    "percentComplete": 0.88
   },
   {
     "option": {
@@ -43,9 +43,9 @@ VALUES
       "correct": true
     },
     "elapsed": 5291,
-    "percentComplete": 0.18
+    "percentComplete": 0.88
   }]'::jsonb),
-  ('2023-11-22', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '[{
+  ('2023-12-08', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '[{
     "option": {
       "name": "Suzuka",
       "value": "japan_suzuka",
@@ -54,7 +54,7 @@ VALUES
       "correct": false
     },
     "elapsed": 6441,
-    "percentComplete": 0.21
+    "percentComplete": 0.88
   },
   {
     "option": {
@@ -65,7 +65,7 @@ VALUES
       "correct": false
     },
     "elapsed": 3635,
-    "percentComplete": 0.12
+    "percentComplete": 0.88
   },
   {
     "option": {
@@ -76,9 +76,9 @@ VALUES
       "correct": true
     },
     "elapsed": 5291,
-    "percentComplete": 0.18
+    "percentComplete": 0.88
   }]'::jsonb),
-  ('2023-11-20', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '[{
+  ('2023-12-07', '5899f99d-a449-4bfa-8769-19c097aaf1f5'::uuid, '[{
     "option": {
       "name": "Suzuka",
       "value": "japan_suzuka",
@@ -87,7 +87,7 @@ VALUES
       "correct": false
     },
     "elapsed": 6441,
-    "percentComplete": 0.21
+    "percentComplete": 0.88
   },
   {
     "option": {
@@ -98,7 +98,7 @@ VALUES
       "correct": true
     },
     "elapsed": 3635,
-    "percentComplete": 0.12
+    "percentComplete": 0.88
   },
   {
     "option": {
@@ -109,7 +109,7 @@ VALUES
       "correct": true
     },
     "elapsed": 5291,
-    "percentComplete": 0.18
+    "percentComplete": 0.88
   }]'::jsonb);
 
 -- MUST BE LAST

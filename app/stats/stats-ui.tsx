@@ -35,7 +35,7 @@ const StatsUI = ({dailyResults}: StatsProps) => {
 
     return {
       elapsed: roundTo(av.elapsed + (totalElapsed/nGuesses), 0),
-      pc: roundTo(av.pc + (totalPc/nGuesses), 2),
+      pc: roundTo(av.pc + (totalPc/(nResults * nGuesses)), 2),
       correct: av.correct + (nCorrect/(nResults * nGuesses))
     }
   }, {
