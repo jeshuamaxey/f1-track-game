@@ -1,6 +1,6 @@
 # F1 track game
 
-[ere we go!](https://f1-tracks.com/)
+https://f1-tracks.com/
 
 ## to do
 
